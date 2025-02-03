@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 Fairphone B.V.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources>
+    <string name="app_name">Switch Button Settings</string>
+
+    <string name="pref_screen_header_switch">Switch</string>
+
+    <string name="pref_key_switch_action">pref_switch_action</string>
+    <string name="pref_title_switch_action">Switch Action</string>
+
+    <string name="pref_title_digital_detox">Digital Detox Switch</string>
+    <string name="pref_title_do_not_disturb">Do not disturb</string>
+    <string name="pref_title_flight_mode">Flight Mode</string>
+    <string name="pref_title_torch_light">Torch Light</string>
+    <string name="pref_title_dark_mode">Dark &amp; Light Mode</string>
+    <string name="pref_title_battery_saver_mode">Battery Saver</string>
+
+    <string name="pref_summary_digital_detox">Turns on/off your Digital Detox profile.\nYou can adjust those settings in the app</string>
+    <string name="pref_summary_do_not_disturb">Turns on/off Do Not Disturb</string>
+    <string name="pref_summary_flight_mode">Turns on/off flight Mode</string>
+    <string name="pref_summary_torch_light">Turns on/off the torch</string>
+    <string name="pref_summary_dark_mode">Switch between Dark &amp; Light mode</string>
+    <string name="pref_summary_battery_saver_mode">Turns on/off battery saver</string>
+
+    <string-array name="switch_pref_entries">
+        <item>@string/pref_title_digital_detox</item>
+        <item>@string/pref_title_do_not_disturb</item>
+        <item>@string/pref_title_flight_mode</item>
+        <item>@string/pref_title_torch_light</item>
+        <item>@string/pref_title_dark_mode</item>
+        <item>@string/pref_title_battery_saver_mode</item>
+    </string-array>
+
+    <string-array name="switch_pref_values">
+        <item>digital_detox</item>
+        <item>do_not_disturb</item>
+        <item>flight_mode</item>
+        <item>torch_light</item>
+        <item>dark_mode</item>
+        <item>battery_saver_mode</item>
+    </string-array>
+</resources>

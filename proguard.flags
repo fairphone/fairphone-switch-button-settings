@@ -1,0 +1,7 @@
+# This is a configuration file for ProGuard.
+# http://proguard.sourceforge.net/index.html#manual/usage.html
+
+# Fairphone
+-keep class com.fairphone.settings.** { *; }
+-dontwarn com.fairphone.**
+-keepattributes Exceptions
