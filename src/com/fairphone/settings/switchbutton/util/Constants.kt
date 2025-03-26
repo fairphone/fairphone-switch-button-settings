@@ -8,7 +8,7 @@
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -18,7 +18,7 @@
 package com.fairphone.settings.switchbutton.util
 
 object Constants {
-    const val ACTION_SWITCH_BUTTON = "com.fairphone.action.SWITCH_BUTTON_STATE_CHANGED"
+    const val ACTION_SWITCH_BUTTON = "com.fairphone.action.SWITCH_STATE_CHANGED"
     const val ACTION_SPRING_LAUNCHER_SETTINGS = "com.fairphone.action.SPRING_LAUNCHER_SETTINGS"
     const val ACTION_START_SPRING_LAUNCHER = "com.fairphone.action.START_SPRING_LAUNCHER"
     const val ACTION_STOP_SPRING_LAUNCHER = "com.fairphone.action.STOP_SPRING_LAUNCHER"
@@ -33,7 +33,7 @@ object Constants {
     const val KEY_SWITCH_SETTING_SPRING_LAUNCHER = "setting_switch_spring_launcher"
 
     const val SPRING_LAUNCHER_PACKAGE_NAME = "com.fairphone.spring.launcher"
-    const val SPRING_LAUNCHER_SETTINGS_ACTIVITY = "com.fairphone.spring.launcher.LauncherSettingsActivity"
+    const val SPRING_LAUNCHER_SETTINGS_ACTIVITY = "com.fairphone.spring.launcher.activity.LauncherSettingsActivity"
 
     const val SPRING_LAUNCHER_CORE_PACKAGE_NAME = "com.fairphone.spring.core"
     const val SPRING_LAUNCHER_CORE_RECEIVER = "com.fairphone.spring.core.SpringLauncherStarterReceiver"

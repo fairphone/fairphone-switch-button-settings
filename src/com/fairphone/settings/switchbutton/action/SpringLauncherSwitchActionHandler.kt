@@ -56,6 +56,7 @@ object SpringLauncherSwitchActionHandler : SwitchActionHandler() {
                 Constants.SPRING_LAUNCHER_CORE_PACKAGE_NAME,
                 Constants.SPRING_LAUNCHER_CORE_RECEIVER,
             )
+            setPackage(Constants.SPRING_LAUNCHER_CORE_PACKAGE_NAME)
             addFlags(Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND)
         }
         context.sendBroadcast(intent)

@@ -26,6 +26,7 @@ import android.content.pm.PackageManager
 import android.hardware.camera2.CameraManager
 import android.net.ConnectivityManager
 import android.os.PowerManager
+import android.provider.Settings
 import android.util.Log
 
 fun Context.cameraManager() = getSystemService(Context.CAMERA_SERVICE) as CameraManager
@@ -62,4 +63,9 @@ fun Context.startSpringLauncherSettings() = try {
     startActivity(intent)
 } catch (e: Exception) {
     Log.e("SwitchButtonSetting", "Error starting spring launcher settings", e)
+}
+
+fun Context.isUserSetupCompleted(): Boolean {
+    val setting = Settings.Secure.getInt(contentResolver, Settings.Secure.USER_SETUP_COMPLETE, 0)
+    return setting == 1
 }

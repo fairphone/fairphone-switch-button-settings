@@ -44,6 +44,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SwitchButtonSettings"
+        android:debuggable="true"
         tools:ignore="DataExtractionRules">
 
         <activity
@@ -70,7 +71,7 @@
             android:name=".SwitchButtonActionReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.fairphone.action.SWITCH_BUTTON_STATE_CHANGED" />
+                <action android:name="com.fairphone.action.SWITCH_STATE_CHANGED" />
             </intent-filter>
         </receiver>
     </application>

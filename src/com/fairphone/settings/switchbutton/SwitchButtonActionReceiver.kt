@@ -7,6 +7,7 @@ import android.util.Log
 import com.fairphone.settings.switchbutton.model.SwitchState
 import com.fairphone.settings.switchbutton.util.Constants
 import com.fairphone.settings.switchbutton.util.SwitchButtonSettingsUtils
+import com.fairphone.settings.switchbutton.util.isUserSetupCompleted
 
 class SwitchButtonActionReceiver : BroadcastReceiver() {
     companion object {
@@ -18,6 +19,14 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
             Log.d(TAG, "Received action: ${intent?.action}")
             return
         }
+
+        // Ignore if user device setup is not complete yet
+        if (!context.isUserSetupCompleted()) {
+            Log.i(TAG, "User setup is not complete yet, ignoring broadcast")
+            return
+        }
+
+        // TODO: Add logic to prevent fast switching
 
         val status = intent.getSwitchState() ?: run {
             Log.e(TAG, "Could not read switch status")

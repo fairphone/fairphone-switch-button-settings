@@ -20,16 +20,15 @@ package {
     ],
 }
 
-//
-// Switch Button Settings app build rule
-//
+
+// app package
 android_app {
     name: "SwitchButtonSettings",
     platform_apis: true,
-        privileged: true,
-        certificate: "platform",
-        target_sdk_version: "current",
-        min_sdk_version: "current",
+    privileged: true,
+    certificate: "platform",
+    target_sdk_version: "current",
+    min_sdk_version: "current",
     srcs: [
         "src/**/*.kt",
         "src/**/*.java",
@@ -46,6 +45,5 @@ android_app {
         "androidx.compose.ui_ui",
         "androidx.compose.ui_ui-tooling",
         "androidx.compose.ui_ui-graphics",
-        "androidx.lifecycle_lifecycle-viewmodel-compose",
     ],
 }
