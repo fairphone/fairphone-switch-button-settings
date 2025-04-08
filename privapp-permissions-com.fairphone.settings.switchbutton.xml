@@ -26,9 +26,11 @@ privileged FairphoneActivator.
         <permission name="android.permission.ACCESS_NOTIFICATION_POLICY" />
         <permission name="android.permission.BROADCAST_STICKY" />
         <permission name="android.permission.FLASHLIGHT"/>
+        <permission name="MANAGE_DEFAULT_APPLICATIONS" />
         <permission name="android.permission.MODIFY_DAY_NIGHT_MODE" />
         <permission name="android.permission.NETWORK_AIRPLANE_MODE" />
         <permission name="android.permission.POWER_SAVER" />
+        <permission name="android.permission.REAL_GET_TASKS" />
         <permission name="android.permission.WRITE_SETTINGS" />
         <permission name="android.permission.WRITE_SECURE_SETTINGS" />
     </privapp-permissions>

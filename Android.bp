@@ -20,6 +20,21 @@ package {
     ],
 }
 
+// privapp permissions
+prebuilt_etc {
+    name: "privapp_permissions_SwitchButtonSettings",
+    sub_dir: "permissions",
+    src: "privapp-permissions-com.fairphone.settings.switchbutton.xml",
+    filename_from_src: true,
+}
+
+// default permissions
+prebuilt_etc {
+    name: "default_permissions_SwitchButtonSettings",
+    sub_dir: "default-permissions",
+    src: "default-permissions-com.fairphone.settings.switchbutton.xml",
+    filename_from_src: true,
+}
 
 // app package
 android_app {
@@ -32,6 +47,7 @@ android_app {
     srcs: [
         "src/**/*.kt",
         "src/**/*.java",
+        "src/**/*.aidl",
     ],
     resource_dirs: ["res"],
     optimize: {

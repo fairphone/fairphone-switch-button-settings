@@ -48,7 +48,8 @@ $(call add-clean-step, rm -rf $(OUT_DIR)/target/common/obj/APPS/SwitchButtonSett
 $(call add-clean-step, rm -rf $(OUT_DIR)/soong/.intermediates/vendor/fairphone/apps/SwitchButtonSettings)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/SwitchButtonSettings_intermediates)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/priv-app/SwitchButtonSettings)
-$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/etc/permissions/com.fairphone.settings.switchbutton.xml)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/etc/default-permissions/default-privapp-permissions-com.fairphone.settings.switchbutton.xml)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/etc/permissions/privapp-permissions-com.fairphone.settings.switchbutton.xml)
 
 # ************************************************
 # NEWER CLEAN STEPS MUST BE AT THE END OF THE LIST
