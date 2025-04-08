@@ -11,7 +11,7 @@ import com.fairphone.settings.switchbutton.action.DarkModeModeSwitchActionHandle
 import com.fairphone.settings.switchbutton.action.DoNotDisturbSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.FlightModeSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.PowerSaverModeSwitchActionHandler
-import com.fairphone.settings.switchbutton.action.SpringLauncherSwitchActionHandler
+import com.fairphone.settings.switchbutton.action.FairphoneMomentsSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.SwitchActionHandler
 import com.fairphone.settings.switchbutton.action.TorchLightSwitchActionHandler
 import com.fairphone.settings.switchbutton.model.SwitchButtonSettings
@@ -48,7 +48,7 @@ object SwitchButtonSettingsUtils {
         KEY_SWITCH_SETTING_DARK_MODE to DarkModeModeSwitchActionHandler,
         KEY_SWITCH_SETTING_DO_NOT_DISTURB to DoNotDisturbSwitchActionHandler,
         KEY_SWITCH_SETTING_FLIGHT_MODE to FlightModeSwitchActionHandler,
-        KEY_SWITCH_SETTING_SPRING_LAUNCHER to SpringLauncherSwitchActionHandler,
+        KEY_SWITCH_SETTING_SPRING_LAUNCHER to FairphoneMomentsSwitchActionHandler,
         KEY_SWITCH_SETTING_TORCH_LIGHT to TorchLightSwitchActionHandler,
     )
 

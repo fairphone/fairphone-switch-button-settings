@@ -20,7 +20,10 @@ package com.fairphone.settings.switchbutton.model
 /**
  * The two states of the Switch.
  */
-enum class SwitchState(val value: Boolean) {
-    UP(true),
-    DOWN(false),
+enum class SwitchState {
+    UP,
+    DOWN,
+    // PENDING_UP,
+    // PENDING_DOWN,
+    // ERROR,
 }

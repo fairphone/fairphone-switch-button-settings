@@ -26,6 +26,7 @@ import android.content.pm.PackageManager
 import android.hardware.camera2.CameraManager
 import android.net.ConnectivityManager
 import android.os.PowerManager
+import android.os.UserHandle
 import android.provider.Settings
 import android.util.Log
 
@@ -65,7 +66,12 @@ fun Context.startSpringLauncherSettings() = try {
     Log.e("SwitchButtonSetting", "Error starting spring launcher settings", e)
 }
 
-fun Context.isUserSetupCompleted(): Boolean {
-    val setting = Settings.Secure.getInt(contentResolver, Settings.Secure.USER_SETUP_COMPLETE, 0)
-    return setting == 1
+/**
+ * @return true if user device setup is complete, false otherwise
+ */
+fun Context.isUserSetupComplete(): Boolean {
+    return Settings.Secure.getIntForUser(
+        contentResolver,
+        Settings.Secure.USER_SETUP_COMPLETE, 0, UserHandle.USER_CURRENT
+    ) != 0
 }

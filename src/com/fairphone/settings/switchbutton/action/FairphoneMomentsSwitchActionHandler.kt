@@ -17,29 +17,21 @@
 
 package com.fairphone.settings.switchbutton.action
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import com.fairphone.settings.switchbutton.model.SwitchState
-import com.fairphone.settings.switchbutton.util.Constants
+import com.fairphone.settings.switchbutton.util.LauncherUtils
 
-object SpringLauncherSwitchActionHandler : SwitchActionHandler() {
+object FairphoneMomentsSwitchActionHandler : SwitchActionHandler() {
     override fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
         return try {
             when (state) {
                 SwitchState.UP -> {
-                    sendSpringLauncherBroadcast(
-                        context = context,
-                        launcherAction = Constants.ACTION_STOP_SPRING_LAUNCHER
-                    )
+                    LauncherUtils.disableDetoxMode(context)
                 }
 
                 SwitchState.DOWN -> {
-                    sendSpringLauncherBroadcast(
-                        context = context,
-                        launcherAction = Constants.ACTION_START_SPRING_LAUNCHER
-                    )
+                    LauncherUtils.enableDetoxMode(context)
                 }
             }
             Result.success(Unit)
@@ -47,18 +39,5 @@ object SpringLauncherSwitchActionHandler : SwitchActionHandler() {
             Log.e("SpringLauncherSwitch", "Error", e)
             Result.failure(e)
         }
-    }
-
-    private fun sendSpringLauncherBroadcast(context: Context, launcherAction: String) {
-        val intent = Intent(launcherAction).apply {
-            action = launcherAction
-            component = ComponentName(
-                Constants.SPRING_LAUNCHER_CORE_PACKAGE_NAME,
-                Constants.SPRING_LAUNCHER_CORE_RECEIVER,
-            )
-            setPackage(Constants.SPRING_LAUNCHER_CORE_PACKAGE_NAME)
-            addFlags(Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND)
-        }
-        context.sendBroadcast(intent)
     }
 }
