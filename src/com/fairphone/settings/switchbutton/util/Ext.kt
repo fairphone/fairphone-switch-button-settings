@@ -19,6 +19,7 @@ package com.fairphone.settings.switchbutton.util
 
 import android.app.NotificationManager
 import android.app.UiModeManager
+import android.app.WallpaperManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -41,6 +42,12 @@ fun Context.uiModeManager() = getSystemService(Context.UI_MODE_SERVICE) as UiMod
 
 fun Context.connectivityManager() =
     getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+fun Context.isDarkModeEnabled(): Boolean {
+    return uiModeManager().nightMode == UiModeManager.MODE_NIGHT_YES
+}
+
+fun Context.wallpaperManager() = getSystemService(Context.WALLPAPER_SERVICE) as WallpaperManager
 
 fun Context.isSpringLauncherAvailable(): Boolean = try {
     packageManager

@@ -17,13 +17,14 @@
 
 package com.fairphone.settings.switchbutton.action
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import com.fairphone.settings.switchbutton.model.SwitchState
 import com.fairphone.settings.switchbutton.util.powerManager
 
 object PowerSaverModeSwitchActionHandler : SwitchActionHandler() {
-    override fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
+    override suspend fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
         return try {
             when (state) {
                 SwitchState.UP -> stopBatterySaverMode(context)
@@ -36,12 +37,14 @@ object PowerSaverModeSwitchActionHandler : SwitchActionHandler() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun startBatterySaverMode(context: Context) {
         context
             .powerManager()
             .setPowerSaveModeEnabled(true)
     }
 
+    @SuppressLint("MissingPermission")
     private fun stopBatterySaverMode(context: Context) {
         context
             .powerManager()

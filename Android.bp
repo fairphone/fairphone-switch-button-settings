@@ -51,8 +51,8 @@ android_app {
     ],
     resource_dirs: ["res"],
     optimize: {
-            proguard_flags_files: ["proguard.flags"],
-        },
+        proguard_flags_files: ["proguard.flags"],
+    },
     static_libs : [
         "androidx.activity_activity-compose",
         "androidx.compose.foundation_foundation",
@@ -61,5 +61,7 @@ android_app {
         "androidx.compose.ui_ui",
         "androidx.compose.ui_ui-tooling",
         "androidx.compose.ui_ui-graphics",
+        "androidx.datastore_datastore-preferences",
+        "androidx.work_work-runtime",
     ],
 }

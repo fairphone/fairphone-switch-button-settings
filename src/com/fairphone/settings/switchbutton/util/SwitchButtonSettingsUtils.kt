@@ -5,15 +5,14 @@ import android.database.ContentObserver
 import android.net.Uri
 import android.os.Handler
 import android.provider.Settings
-import com.fairphone.settings.switchbutton.model.SwitchButtonSetting
-import com.fairphone.settings.switchbutton.R
 import com.fairphone.settings.switchbutton.action.DarkModeModeSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.DoNotDisturbSwitchActionHandler
+import com.fairphone.settings.switchbutton.action.FairphoneMomentsSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.FlightModeSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.PowerSaverModeSwitchActionHandler
-import com.fairphone.settings.switchbutton.action.FairphoneMomentsSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.SwitchActionHandler
 import com.fairphone.settings.switchbutton.action.TorchLightSwitchActionHandler
+import com.fairphone.settings.switchbutton.model.SwitchButtonSetting
 import com.fairphone.settings.switchbutton.model.SwitchButtonSettings
 import com.fairphone.settings.switchbutton.model.SwitchButtonSettingsFairphoneSpring
 import com.fairphone.settings.switchbutton.util.Constants.KEY_SWITCH_SETTING_DARK_MODE
@@ -51,10 +50,6 @@ object SwitchButtonSettingsUtils {
         KEY_SWITCH_SETTING_SPRING_LAUNCHER to FairphoneMomentsSwitchActionHandler,
         KEY_SWITCH_SETTING_TORCH_LIGHT to TorchLightSwitchActionHandler,
     )
-
-    private val SWITCH_BUTTON_ACTION_DEFAULT_VALUE_RESOURCE = R.integer.config_switchButtonBehavior
-
-    //private val SWITCH_BUTTON_ACTION_URI = Settings.Global.getUriFor(SWITCH_BUTTON_ACTION_SETTING)
 
     fun getAllSwitchActions(context: Context): List<SwitchButtonSetting> {
         return if (context.isSpringLauncherAvailable()) {

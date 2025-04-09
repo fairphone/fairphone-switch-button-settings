@@ -28,10 +28,13 @@ privileged FairphoneActivator.
         <permission name="android.permission.FLASHLIGHT"/>
         <permission name="android.permission.INTERACT_ACROSS_USERS_FULL" />
         <permission name="android.permission.MANAGE_DEFAULT_APPLICATIONS" />
+        <permission name="android.permission.MANAGE_EXTERNAL_STORAGE" />
         <permission name="android.permission.MODIFY_DAY_NIGHT_MODE" />
         <permission name="android.permission.NETWORK_AIRPLANE_MODE" />
         <permission name="android.permission.POWER_SAVER" />
+        <permission name="android.permission.READ_WALLPAPER_INTERNAL" />
         <permission name="android.permission.REAL_GET_TASKS" />
+        <permission name="android.permission.SET_WALLPAPER" />
         <permission name="android.permission.WRITE_SETTINGS" />
         <permission name="android.permission.WRITE_SECURE_SETTINGS" />
     </privapp-permissions>

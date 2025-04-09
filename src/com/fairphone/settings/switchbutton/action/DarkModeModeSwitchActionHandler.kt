@@ -24,7 +24,7 @@ import com.fairphone.settings.switchbutton.model.SwitchState
 import com.fairphone.settings.switchbutton.util.uiModeManager
 
 object DarkModeModeSwitchActionHandler : SwitchActionHandler() {
-    override fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
+    override suspend fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
         return try {
             when (state) {
                 SwitchState.UP -> stopDarkMode(context)

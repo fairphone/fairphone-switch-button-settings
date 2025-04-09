@@ -21,5 +21,5 @@ import android.content.Context
 import com.fairphone.settings.switchbutton.model.SwitchState
 
 abstract class SwitchActionHandler {
-    abstract fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit>
+    abstract suspend fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit>
 }

@@ -26,9 +26,6 @@ import android.os.UserHandle
 import android.util.Log
 import androidx.core.content.ContextCompat
 import kotlin.coroutines.resume
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 object LauncherUtils {
@@ -40,35 +37,34 @@ object LauncherUtils {
      *  - Enable DND
      *  - (disabled) Set detox lockscreen wallpaper
      */
-    @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("MissingPermission")
-    fun enableDetoxMode(context: Context) {
+    suspend fun enableDetoxMode(context: Context) {
         Log.d(Constants.LOG_TAG, "enabling detox mode")
 
-        GlobalScope.launch {
-            // Set Spring Launcher as default launcher
-            val homeAppSetSuccess = setDefaultHomeAppAsync(context, Constants.SPRING_LAUNCHER_PACKAGE_NAME)
+        // Set Spring Launcher as default launcher
+        val homeAppSetSuccess =
+            setDefaultHomeAppAsync(context, Constants.SPRING_LAUNCHER_PACKAGE_NAME)
 
-            if (homeAppSetSuccess) {
-                // Show switch enabled hint
-                if (shouldShowOverlayAnimation(context)) {
-                    Log.d(Constants.LOG_TAG, "showing overlay animation")
-                    showDetoxEnabledOverlayHint(context)
-                } else {
-                    startLauncherIntent(context, Constants.SPRING_LAUNCHER_PACKAGE_NAME)
-                }
-
-                // Enable DND
-                context
-                    .notificationManager()
-                    .setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
-
-                // TODO: Change lockscreen wallpaper
-                // Set lockscreen wallpaper
-                // context.setDetoxLockscreenWallpaper()
+        if (homeAppSetSuccess) {
+            // Show switch enabled hint
+            if (shouldShowOverlayAnimation(context)) {
+                Log.d(Constants.LOG_TAG, "showing overlay animation")
+                showDetoxEnabledOverlayHint(context)
             } else {
-                //TODO: Handle launcher switch error
+                startLauncherIntent(context, Constants.SPRING_LAUNCHER_PACKAGE_NAME)
             }
+
+            // Enable DND
+            context
+                .notificationManager()
+                .setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
+
+            // TODO: Change lockscreen wallpaper
+            // Set lockscreen wallpaper
+            //LockscreenUtils.setDetoxLockscreenWallpaper(context)
+            LockscreenWallpaperWorker.enqueueWallpaperWork(context, isDetoxEnabled = true)
+        } else {
+            //TODO: Handle launcher switch error
         }
     }
 
@@ -80,64 +76,62 @@ object LauncherUtils {
      *  - Disable DND
      *  - (disabled) Restore lockscreen wallpaper
      */
-    @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("MissingPermission")
-    fun disableDetoxMode(context: Context) {
+    suspend fun disableDetoxMode(context: Context) {
         Log.d(Constants.LOG_TAG, "disabling detox mode")
-        GlobalScope.launch {
-            // Set Search Launcher as default launcher
-            val homeAppSetSuccess =
-                setDefaultHomeAppAsync(context, Constants.STOCK_LAUNCHER_PACKAGE_NAME)
+        // Set Search Launcher as default launcher
+        val homeAppSetSuccess =
+            setDefaultHomeAppAsync(context, Constants.STOCK_LAUNCHER_PACKAGE_NAME)
 
-            if (homeAppSetSuccess) {
-                // Show switch disabled hint
-                if (shouldShowOverlayAnimation(context)) {
-                    Log.d(Constants.LOG_TAG, "showing overlay animation")
-                    showDetoxDisabledOverlayHint(context)
-                } else {
-                    startLauncherIntent(context, Constants.STOCK_LAUNCHER_PACKAGE_NAME)
-                }
-
-                // Disable DND
-                context
-                    .notificationManager()
-                    .setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
-
-                // TODO: Revert lockscreen wallpaper
-                // context.restoreLockscreenWallpaperFromCache()
+        if (homeAppSetSuccess) {
+            // Show switch disabled hint
+            if (shouldShowOverlayAnimation(context)) {
+                Log.d(Constants.LOG_TAG, "showing overlay animation")
+                showDetoxDisabledOverlayHint(context)
             } else {
-                //TODO: Handle launcher switch error
+                startLauncherIntent(context, Constants.STOCK_LAUNCHER_PACKAGE_NAME)
             }
+
+            // Disable DND
+            context
+                .notificationManager()
+                .setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+
+            // TODO: Revert lockscreen wallpaper
+            LockscreenWallpaperWorker.enqueueWallpaperWork(context, isDetoxEnabled = false)
+        } else {
+            //TODO: Handle launcher switch error
         }
     }
 
     @SuppressLint("MissingPermission")
-    private suspend fun setDefaultHomeAppAsync(context: Context, packageName: String): Boolean = suspendCancellableCoroutine { continuation ->
-        Log.d(Constants.LOG_TAG, "setting default home app: $packageName")
+    private suspend fun setDefaultHomeAppAsync(context: Context, packageName: String): Boolean {
+        return suspendCancellableCoroutine { continuation ->
+            Log.d(Constants.LOG_TAG, "setting default home app: $packageName")
 
-        try {
-            val roleManager = context.getSystemService(Context.ROLE_SERVICE) as RoleManager
-            val foregroundUser = ActivityManager.getCurrentUser()
-            roleManager.addRoleHolderAsUser(
-                RoleManager.ROLE_HOME,
-                packageName,
-                0,
-                UserHandle.of(foregroundUser),
-                ContextCompat.getMainExecutor(context),
-            ) { success: Boolean ->
-                if (success) {
-                    Log.d(Constants.LOG_TAG, "$packageName is now the default HOME app")
-                } else {
-                    Log.e(Constants.LOG_TAG, "Error setting $packageName as default HOME app")
+            try {
+                val roleManager = context.getSystemService(Context.ROLE_SERVICE) as RoleManager
+                val foregroundUser = ActivityManager.getCurrentUser()
+                roleManager.addRoleHolderAsUser(
+                    RoleManager.ROLE_HOME,
+                    packageName,
+                    0,
+                    UserHandle.of(foregroundUser),
+                    ContextCompat.getMainExecutor(context),
+                ) { success: Boolean ->
+                    if (success) {
+                        Log.d(Constants.LOG_TAG, "$packageName is now the default HOME app")
+                    } else {
+                        Log.e(Constants.LOG_TAG, "Error setting $packageName as default HOME app")
+                    }
+                    continuation.resume(success)
                 }
-                continuation.resume(success)
+            } catch (e: Exception) {
+                Log.e(Constants.LOG_TAG, "Error setting $packageName as default home app", e)
+                continuation.resume(false)
             }
-        } catch (e: Exception) {
-            Log.e(Constants.LOG_TAG, "Error setting $packageName as default home app", e)
-            continuation.resume(false)
         }
     }
-
 
     @SuppressLint("MissingPermission")
     private fun showDetoxEnabledOverlayHint(context: Context) {
@@ -201,6 +195,7 @@ object LauncherUtils {
         }
         return true
     }
+
 
     private fun startLauncherIntent(context: Context, launcherPackageName: String) {
         val intent = Intent(Intent.ACTION_MAIN).apply {
