@@ -21,7 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import android.util.Log
-import com.fairphone.settings.switchbutton.model.SwitchState
+import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.connectivityManager
 
 object FlightModeSwitchActionHandler : SwitchActionHandler() {
@@ -30,6 +30,7 @@ object FlightModeSwitchActionHandler : SwitchActionHandler() {
             when (state) {
                 SwitchState.UP -> stopFlightMode(context)
                 SwitchState.DOWN -> startFlightMode(context)
+                else -> Unit // ignore
             }
             Result.success(Unit)
         } catch (e: Exception) {

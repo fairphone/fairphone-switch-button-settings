@@ -26,19 +26,11 @@ object Constants {
 
     const val EXTRA_SWITCH_STATUS = "com.fairphone.extra.SWITCH_STATUS"
 
-    const val KEY_SWITCH_SETTING_DO_NOT_DISTURB = "setting_switch_do_not_disturb"
-    const val KEY_SWITCH_SETTING_FLIGHT_MODE = "setting_switch_flight_mode"
-    const val KEY_SWITCH_SETTING_TORCH_LIGHT = "setting_switch_torch_light"
-    const val KEY_SWITCH_SETTING_DARK_MODE = "setting_switch_dark_mode"
-    const val KEY_SWITCH_SETTING_POWER_SAVER = "setting_switch_power_saver"
-    const val KEY_SWITCH_SETTING_SPRING_LAUNCHER = "setting_switch_spring_launcher"
 
-    const val SPRING_LAUNCHER_PACKAGE_NAME = "com.fairphone.spring.launcher"
-    const val SPRING_LAUNCHER_HOME_ACTIVITY = "com.fairphone.spring.launcher.activity.SpringLauncherHomeActivity"
-    const val SPRING_LAUNCHER_SETTINGS_ACTIVITY = "com.fairphone.spring.launcher.activity.LauncherSettingsActivity"
 
-    const val SPRING_LAUNCHER_CORE_PACKAGE_NAME = "com.fairphone.spring.core"
-    const val SPRING_LAUNCHER_CORE_RECEIVER = "com.fairphone.spring.core.SpringLauncherStarterReceiver"
+    const val FAIRPHONE_MOMENTS_PACKAGE_NAME = "com.fairphone.spring.launcher"
+    const val FAIRPHONE_MOMENTS_HOME_ACTIVITY = "com.fairphone.spring.launcher.activity.SpringLauncherHomeActivity"
+    const val FAIRPHONE_MOMENTS_SETTINGS_ACTIVITY = "com.fairphone.spring.launcher.activity.LauncherSettingsActivity"
 
 
     const val ACTION_SHOW_SWITCH_BUTTON_HINT = "com.fairphone.action.SHOW_SWITCH_BUTTON_HINT"

@@ -20,7 +20,9 @@ package com.fairphone.settings.switchbutton.ui.screen
 import android.content.Intent
 import android.provider.Settings
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +32,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,13 +45,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fairphone.settings.switchbutton.R
-import com.fairphone.settings.switchbutton.model.SwitchButtonSetting
+import com.fairphone.settings.switchbutton.data.model.SwitchButtonAction
+import com.fairphone.settings.switchbutton.data.model.SwitchState
+import com.fairphone.settings.switchbutton.data.prefs.AppPrefs
+import com.fairphone.settings.switchbutton.data.prefs.appPrefs
 import com.fairphone.settings.switchbutton.ui.component.RadioButtonSetting
+import com.fairphone.settings.switchbutton.ui.theme.SwitchButtonSettingsTheme
 import com.fairphone.settings.switchbutton.ui.theme.prefScreenHeaderTextStyle
-import com.fairphone.settings.switchbutton.util.Constants
-import com.fairphone.settings.switchbutton.util.Constants.KEY_SWITCH_SETTING_SPRING_LAUNCHER
+import com.fairphone.settings.switchbutton.ui.theme.prefSummaryTextStyle
 import com.fairphone.settings.switchbutton.util.SwitchButtonSettingsUtils
 import com.fairphone.settings.switchbutton.util.notificationManager
 import com.fairphone.settings.switchbutton.util.startSpringLauncherSettings
@@ -56,28 +66,34 @@ import com.fairphone.settings.switchbutton.util.startSpringLauncherSettings
 @Composable
 fun SwitchButtonSettings() {
     val context = LocalContext.current.applicationContext
+    val appPrefs = remember { AppPrefs(context.appPrefs) }
 
     var selectedSetting by remember {
-        mutableStateOf(SwitchButtonSettingsUtils.getSwitchButtonActionSetting(context))
+        mutableStateOf(SwitchButtonSettingsUtils.getCurrentSwitchButtonAction(context))
     }
-    val switchSettings = remember {
-        SwitchButtonSettingsUtils.getAllSwitchActions(context)
+    val switchSettings by remember {
+        mutableStateOf(SwitchButtonSettingsUtils.getAllSwitchActions(context))
     }
+    val switchState by appPrefs.getLastKnownSwitchStateFlow().collectAsStateWithLifecycle(
+        initialValue = SwitchState.UP,
+        lifecycleOwner = LocalLifecycleOwner.current
+    )
 
-    SwitchButtonSettings(
+    SwitchButtonSettingsScreen(
         actions = switchSettings,
         selectedSetting = selectedSetting,
+        isSwitchButtonDisabled = switchState == SwitchState.UP,
         onSettingSelected = { action ->
-            if (action == Constants.KEY_SWITCH_SETTING_DO_NOT_DISTURB) {
+            if (action == SwitchButtonAction.DoNotDisturb) {
                 if (!context.notificationManager().isNotificationPolicyAccessGranted) {
                     context.startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
                 }
             }
-            SwitchButtonSettingsUtils.setSwitchButtonActionSetting(context, action)
+            SwitchButtonSettingsUtils.setSwitchButtonAction(context, action)
             selectedSetting = action
         },
         onOpenActionConfig = { action ->
-            if (action == KEY_SWITCH_SETTING_SPRING_LAUNCHER) {
+            if (action == SwitchButtonAction.FairphoneMoments) {
                 context.startSpringLauncherSettings()
             }
         }
@@ -85,11 +101,12 @@ fun SwitchButtonSettings() {
 }
 
 @Composable
-fun SwitchButtonSettings(
-    actions: List<SwitchButtonSetting>,
-    selectedSetting: String,
-    onSettingSelected: (String) -> Unit,
-    onOpenActionConfig: (String) -> Unit?,
+fun SwitchButtonSettingsScreen(
+    actions: List<SwitchButtonAction>,
+    selectedSetting: SwitchButtonAction,
+    isSwitchButtonDisabled: Boolean,
+    onSettingSelected: (SwitchButtonAction) -> Unit,
+    onOpenActionConfig: (SwitchButtonAction) -> Unit?,
 ) {
     val scrollState = rememberScrollState()
 
@@ -99,14 +116,14 @@ fun SwitchButtonSettings(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(vertical = 16.dp)
+            .padding(vertical = 16.dp, horizontal = 16.dp)
 
     ) {
         Text(
             text = stringResource(R.string.pref_screen_header_switch),
             style = prefScreenHeaderTextStyle,
             modifier = Modifier
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 8.dp),
         )
 
         Image(
@@ -114,12 +131,25 @@ fun SwitchButtonSettings(
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
                 .aspectRatio(1.38f / 1f)
                 .clip(RoundedCornerShape(20.dp))
                 .height(320.dp)
-
         )
+
+        if (!isSwitchButtonDisabled) {
+            Box(Modifier.fillMaxWidth()) {
+                Text(
+                    text = stringResource(R.string.disable_switch_to_change_setting_text),
+                    style = prefSummaryTextStyle,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(10.dp))
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                )
+            }
+        }
 
         Column(
             horizontalAlignment = Alignment.Start,
@@ -130,12 +160,27 @@ fun SwitchButtonSettings(
                 RadioButtonSetting(
                     title = stringResource(action.titleResId),
                     summary = stringResource(action.summaryResId),
-                    selected = selectedSetting == action.key,
-                    onRadioButtonClicked = { onSettingSelected(action.key) },
+                    selected = selectedSetting.key == action.key,
+                    enabled = isSwitchButtonDisabled,
+                    onRadioButtonClicked = { onSettingSelected(action) },
                     icon = action.icon,
-                    onIconClicked = { onOpenActionConfig.invoke(action.key) }
+                    onIconClicked = { onOpenActionConfig.invoke(action) }
                 )
             }
         }
+    }
+}
+
+@Composable
+@Preview
+fun SwitchButtonSettings_Preview() {
+    SwitchButtonSettingsTheme {
+        SwitchButtonSettingsScreen(
+            actions = SwitchButtonSettingsUtils.getAllSwitchActions(LocalContext.current),
+            selectedSetting = SwitchButtonAction.DoNotDisturb,
+            isSwitchButtonDisabled = true,
+            onSettingSelected = {},
+            onOpenActionConfig = {}
+        )
     }
 }

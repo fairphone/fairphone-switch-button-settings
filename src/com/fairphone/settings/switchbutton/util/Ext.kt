@@ -49,10 +49,10 @@ fun Context.isDarkModeEnabled(): Boolean {
 
 fun Context.wallpaperManager() = getSystemService(Context.WALLPAPER_SERVICE) as WallpaperManager
 
-fun Context.isSpringLauncherAvailable(): Boolean = try {
+fun Context.isFairphoneMomentsAvailable(): Boolean = try {
     packageManager
         .getPackageInfo(
-            Constants.SPRING_LAUNCHER_PACKAGE_NAME,
+            Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME,
             PackageManager.GET_META_DATA
         ) != null
 } catch (e: PackageManager.NameNotFoundException) {
@@ -61,10 +61,10 @@ fun Context.isSpringLauncherAvailable(): Boolean = try {
 
 fun Context.startSpringLauncherSettings() = try {
     val intent = Intent(Constants.ACTION_SPRING_LAUNCHER_SETTINGS).apply {
-        `package` = Constants.SPRING_LAUNCHER_PACKAGE_NAME
+        `package` = Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME
         component = ComponentName(
-            Constants.SPRING_LAUNCHER_PACKAGE_NAME,
-            Constants.SPRING_LAUNCHER_SETTINGS_ACTIVITY,
+            Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME,
+            Constants.FAIRPHONE_MOMENTS_SETTINGS_ACTIVITY,
         )
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     }

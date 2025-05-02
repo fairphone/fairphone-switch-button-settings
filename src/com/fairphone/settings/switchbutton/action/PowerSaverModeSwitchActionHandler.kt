@@ -20,7 +20,7 @@ package com.fairphone.settings.switchbutton.action
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import com.fairphone.settings.switchbutton.model.SwitchState
+import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.powerManager
 
 object PowerSaverModeSwitchActionHandler : SwitchActionHandler() {
@@ -29,6 +29,7 @@ object PowerSaverModeSwitchActionHandler : SwitchActionHandler() {
             when (state) {
                 SwitchState.UP -> stopBatterySaverMode(context)
                 SwitchState.DOWN -> startBatterySaverMode(context)
+                else -> Unit // ignore
             }
             Result.success(Unit)
         } catch (e: Exception) {

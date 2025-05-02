@@ -19,7 +19,7 @@ package com.fairphone.settings.switchbutton.action
 
 import android.content.Context
 import android.util.Log
-import com.fairphone.settings.switchbutton.model.SwitchState
+import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.LauncherUtils
 
 object FairphoneMomentsSwitchActionHandler : SwitchActionHandler() {
@@ -33,6 +33,7 @@ object FairphoneMomentsSwitchActionHandler : SwitchActionHandler() {
                 SwitchState.DOWN -> {
                     LauncherUtils.enableDetoxMode(context)
                 }
+                else -> Unit // ignore
             }
             Result.success(Unit)
         } catch (e: Exception) {

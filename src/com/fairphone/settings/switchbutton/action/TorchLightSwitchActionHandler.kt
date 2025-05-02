@@ -19,7 +19,7 @@ package com.fairphone.settings.switchbutton.action
 
 import android.content.Context
 import android.util.Log
-import com.fairphone.settings.switchbutton.model.SwitchState
+import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.cameraManager
 
 object TorchLightSwitchActionHandler : SwitchActionHandler() {
@@ -28,6 +28,7 @@ object TorchLightSwitchActionHandler : SwitchActionHandler() {
             when (state) {
                 SwitchState.UP -> stopTorchLight(context)
                 SwitchState.DOWN -> startTorchLight(context)
+                else -> Unit // ignore
             }
             Result.success(Unit)
         } catch (e: Exception) {

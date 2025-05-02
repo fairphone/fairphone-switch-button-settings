@@ -20,19 +20,16 @@ package com.fairphone.settings.switchbutton.action
 import android.app.NotificationManager
 import android.content.Context
 import android.util.Log
-import com.fairphone.settings.switchbutton.model.SwitchState
+import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.notificationManager
 
 object DoNotDisturbSwitchActionHandler : SwitchActionHandler() {
     override suspend fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
         return try {
             when (state) {
-                SwitchState.UP -> {
-                    stopDND(context)
-                }
-                SwitchState.DOWN -> {
-                    startDND(context)
-                }
+                SwitchState.UP -> stopDND(context)
+                SwitchState.DOWN -> startDND(context)
+                else -> Unit // ignore
             }
             Result.success(Unit)
         } catch (e: Exception) {

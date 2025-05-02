@@ -25,7 +25,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.util.DisplayMetrics
 import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
 import androidx.datastore.core.DataStore
@@ -37,7 +36,6 @@ import com.fairphone.settings.switchbutton.R
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import kotlin.math.min
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map

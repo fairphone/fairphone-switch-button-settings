@@ -26,23 +26,22 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Color_FP_Brand_Accent,
-    secondary = Color_FP_Brand_Accent,
-    tertiary = Color_FP_Brand_Accent_Subtle,
-    background = Color_FP_Content_Default,
-    surfaceContainer = Color_FP_Content_Default,
-    onPrimary = Color_FP_Content_Default,
-)
-
 private val LightColorScheme = lightColorScheme(
     primary = Color_FP_Brand_Primary,
     secondary = Color_FP_Brand_Accent_Dark,
     tertiary = Color_FP_Brand_Accent_Subtle,
-    background = Color_Surface,
-    surfaceContainer = Color_Surface,
-    onPrimary = Color_FP_Content_Default,
+    background = backgroundLight,
+    surface = surfaceLight,
+    onSurface = onSurfaceLight,
+)
 
+private val DarkColorScheme = darkColorScheme(
+    primary = Color_FP_Brand_Accent,
+    secondary = Color_FP_Brand_Accent,
+    tertiary = Color_FP_Brand_Accent_Subtle,
+    background = backgroundDark,
+    surface = surfaceDark,
+    onSurface = onSurfaceDark,
 )
 
 @Composable

@@ -22,7 +22,9 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.fairphone.settings.switchbutton.model.SwitchState
+import com.fairphone.settings.switchbutton.data.model.SwitchState
+import com.fairphone.settings.switchbutton.data.prefs.AppPrefs
+import com.fairphone.settings.switchbutton.data.prefs.appPrefs
 import com.fairphone.settings.switchbutton.util.Constants
 import com.fairphone.settings.switchbutton.util.SwitchButtonSettingsUtils
 import com.fairphone.settings.switchbutton.util.isUserSetupComplete
@@ -37,7 +39,7 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
         private const val TAG = "SwitchButtonReceiver"
 
         // How long to wait after the last switch flip before processing.
-        private const val DEBOUNCE_DELAY_MS = 500L // 0.5 seconds
+        private const val DEBOUNCE_DELAY_MS = 300L // 0.3 seconds
 
         // Handler for robust debouncing approach
         private val debounceHandler = Handler(Looper.getMainLooper())
@@ -96,30 +98,40 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
         state: SwitchState,
         pendingResult: PendingResult?
     ) {
-        val switchButtonAction = SwitchButtonSettingsUtils.getSwitchButtonActionSetting(context)
-        val handler = SwitchButtonSettingsUtils.getSwitchButtonActionSettingHandler(context)
+        val appPrefs = AppPrefs(context.appPrefs)
+        val switchButtonAction = SwitchButtonSettingsUtils.getCurrentSwitchButtonAction(context)
+        val handler = switchButtonAction.actionHandler
         val jobScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
         jobScope.launch {
             Log.d(TAG, "Handling switch event for action: $switchButtonAction")
-            try {
-                val result = handler?.onSwitchButtonStateChanged(context, state)
-                if (result?.isFailure == true) {
-                    Log.e(
-                        TAG,
-                        "Error handling action '$switchButtonAction': ${result.exceptionOrNull()?.message}",
-                        result.exceptionOrNull()
-                    )
-                } else {
-                    Log.d(TAG, "Switch event handled successfully.") // Log success
+            var currentState = if (state == SwitchState.UP) {
+                SwitchState.PENDING_UP
+            } else {
+                SwitchState.PENDING_DOWN
+            }
+            // save pending state
+            appPrefs.setLastKnownSwitchState(currentState)
 
+            try {
+                val result = handler.onSwitchButtonStateChanged(context, state)
+                if (result.isFailure) {
+                    // Save error state
+                    appPrefs.setLastKnownSwitchState(SwitchState.ERROR)
+                    Log.e(TAG, "Error handling action '$switchButtonAction': ${result.exceptionOrNull()?.message}", result.exceptionOrNull())
+                } else {
+                    currentState = if (state == SwitchState.UP) {
+                        SwitchState.UP
+                    } else {
+                        SwitchState.DOWN
+                    }
+                    // save final state
+                    appPrefs.setLastKnownSwitchState(currentState)
+                    Log.d(TAG, "Switch event handled successfully.") // Log success
                 }
             } catch (e: InstantiationException) {
-                Log.e(
-                    TAG,
-                    "Error instantiating action handler for '$switchButtonAction': ${e.message}",
-                    e
-                )
+                appPrefs.setLastKnownSwitchState(SwitchState.ERROR)
+                Log.e(TAG, "Error instantiating action handler for '$switchButtonAction': ${e.message}", e)
             } finally {
                 jobScope.cancel()
             }

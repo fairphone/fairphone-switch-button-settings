@@ -55,4 +55,6 @@
         <item>dark_mode</item>
         <item>battery_saver_mode</item>
     </string-array>
+
+    <string name="disable_switch_to_change_setting_text">Disable switch before adjusting action assigned to it</string>
 </resources>

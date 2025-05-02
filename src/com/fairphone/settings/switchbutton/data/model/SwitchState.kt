@@ -15,7 +15,7 @@
  *
  */
 
-package com.fairphone.settings.switchbutton.model
+package com.fairphone.settings.switchbutton.data.model
 
 /**
  * The two states of the Switch.
@@ -23,7 +23,7 @@ package com.fairphone.settings.switchbutton.model
 enum class SwitchState {
     UP,
     DOWN,
-    // PENDING_UP,
-    // PENDING_DOWN,
-    // ERROR,
+    PENDING_UP,
+    PENDING_DOWN,
+    ERROR,
 }

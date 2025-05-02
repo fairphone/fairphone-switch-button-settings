@@ -20,7 +20,7 @@ package com.fairphone.settings.switchbutton.action
 import android.app.UiModeManager
 import android.content.Context
 import android.util.Log
-import com.fairphone.settings.switchbutton.model.SwitchState
+import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.uiModeManager
 
 object DarkModeModeSwitchActionHandler : SwitchActionHandler() {
@@ -29,6 +29,7 @@ object DarkModeModeSwitchActionHandler : SwitchActionHandler() {
             when (state) {
                 SwitchState.UP -> stopDarkMode(context)
                 SwitchState.DOWN -> startDarkMode(context)
+                else -> Unit // ignore
             }
             Result.success(Unit)
         } catch (e: Exception) {

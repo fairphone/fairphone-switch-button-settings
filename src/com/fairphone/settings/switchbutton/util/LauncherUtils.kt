@@ -43,7 +43,7 @@ object LauncherUtils {
 
         // Set Spring Launcher as default launcher
         val homeAppSetSuccess =
-            setDefaultHomeAppAsync(context, Constants.SPRING_LAUNCHER_PACKAGE_NAME)
+            setDefaultHomeAppAsync(context, Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME)
 
         if (homeAppSetSuccess) {
             // Show switch enabled hint
@@ -51,7 +51,7 @@ object LauncherUtils {
                 Log.d(Constants.LOG_TAG, "showing overlay animation")
                 showDetoxEnabledOverlayHint(context)
             } else {
-                startLauncherIntent(context, Constants.SPRING_LAUNCHER_PACKAGE_NAME)
+                startLauncherIntent(context, Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME)
             }
 
             // Enable DND
@@ -144,7 +144,7 @@ object LauncherUtils {
                 Constants.EXTRA_SHOW_OVERLAY,
                 true
             )
-            setPackage(Constants.SPRING_LAUNCHER_PACKAGE_NAME)
+            setPackage(Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         context.startActivityAsUser(intent, UserHandle.SYSTEM)
@@ -161,7 +161,7 @@ object LauncherUtils {
                 Constants.EXTRA_SHOW_OVERLAY,
                 true
             )
-            setPackage(Constants.SPRING_LAUNCHER_PACKAGE_NAME)
+            setPackage(Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
@@ -184,8 +184,8 @@ object LauncherUtils {
                 Log.d(Constants.LOG_TAG, "Top activity name: ${topActivity.className}")
                 return when {
                     topActivity.packageName == Constants.STOCK_LAUNCHER_PACKAGE_NAME -> false
-                    topActivity.packageName == Constants.SPRING_LAUNCHER_PACKAGE_NAME
-                            && topActivity.className == Constants.SPRING_LAUNCHER_HOME_ACTIVITY -> false
+                    topActivity.packageName == Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME
+                            && topActivity.className == Constants.FAIRPHONE_MOMENTS_HOME_ACTIVITY -> false
 
                     else -> true
                 }

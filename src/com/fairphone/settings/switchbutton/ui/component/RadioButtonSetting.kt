@@ -26,6 +26,7 @@ fun RadioButtonSetting(
     title: String,
     summary: String,
     selected: Boolean,
+    enabled: Boolean = true,
     onRadioButtonClicked: () -> Unit,
     icon: ImageVector? = null,
     onIconClicked: (() -> Unit)? = null,
@@ -35,10 +36,14 @@ fun RadioButtonSetting(
         verticalAlignment = Alignment.Top,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
-        .clickable(onClick = onRadioButtonClicked)
+            .padding(horizontal = 8.dp)
+            .clickable(
+                enabled = enabled,
+                onClick = onRadioButtonClicked
+            )
     ) {
         RadioButton(
+            enabled = enabled,
             selected = selected,
             onClick = onRadioButtonClicked,
             colors = RadioButtonDefaults.colors(
@@ -53,10 +58,20 @@ fun RadioButtonSetting(
             Text(
                 text = title,
                 style = prefTitleTextStyle,
+                color = if (enabled) {
+                    MaterialTheme.colorScheme.onSurface
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
             )
             Text(
                 text = summary,
                 style = prefSummaryTextStyle,
+                color = if (enabled) {
+                    MaterialTheme.colorScheme.onSurface
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
             )
         }
 
