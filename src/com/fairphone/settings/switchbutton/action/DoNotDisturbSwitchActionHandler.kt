@@ -17,14 +17,42 @@
 
 package com.fairphone.settings.switchbutton.action
 
-import android.app.NotificationManager
+import android.app.AutomaticZenRule
+import android.content.ComponentName
 import android.content.Context
+import android.service.notification.Condition
+import android.service.notification.ZenPolicy
 import android.util.Log
+import androidx.core.net.toUri
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import com.fairphone.settings.switchbutton.SwitchButtonSettingsActivity
 import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.notificationManager
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
+/**
+ * This class is responsible for handling the "Do Not Disturb" (DND) switch action.
+ * It extends [SwitchActionHandler] and implements the logic for starting and stopping DND mode
+ * based on the state of the switch button.
+ *
+ * It utilizes the NotificationManager to manage automatic zen rules and DataStore to persist
+ * the zen rule ID.
+ */
 object DoNotDisturbSwitchActionHandler : SwitchActionHandler() {
-    override suspend fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
+
+    private const val DND_PREFS_DATASTORE = "dnd_prefs"
+    private val Context.dndPrefsDataStore: DataStore<Preferences> by preferencesDataStore(name = DND_PREFS_DATASTORE)
+    private val PREF_KEY_ZEN_RULE_ID = stringPreferencesKey("zen_rule_id")
+
+    override suspend fun onSwitchButtonStateChanged(
+        context: Context,
+        state: SwitchState
+    ): Result<Unit> {
         return try {
             when (state) {
                 SwitchState.UP -> stopDND(context)
@@ -38,15 +66,64 @@ object DoNotDisturbSwitchActionHandler : SwitchActionHandler() {
         }
     }
 
-    private fun startDND(context: Context) {
-        context
-            .notificationManager()
-            .setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
+    private fun getZenRuleName() = "Switch"
+    private fun getZenRuleConditionUri(context: Context) = context.packageName.toUri()
+
+    private suspend fun startDND(context: Context) {
+        if (context.notificationManager().getAutomaticZenRule(getZenRuleId(context)) == null) {
+            val zenRule = createZenRule(context)
+            val zenRuleId = context.notificationManager().addAutomaticZenRule(zenRule)
+            saveZenRuleId(context, zenRuleId)
+        } else {
+            val zenRuleId = getZenRuleId(context)
+            val zenRuleCondition = Condition(
+                getZenRuleConditionUri(context),
+                getZenRuleName(),
+                Condition.STATE_TRUE,
+            )
+            context.notificationManager().setAutomaticZenRuleState(zenRuleId, zenRuleCondition)
+        }
     }
 
-    private fun stopDND(context: Context) {
-        context
-            .notificationManager()
-            .setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+    private suspend fun stopDND(context: Context) {
+        val zenRuleId = getZenRuleId(context)
+        val zenRuleCondition = Condition(
+            getZenRuleConditionUri(context),
+            getZenRuleName(),
+            Condition.STATE_FALSE,
+        )
+        context.notificationManager().setAutomaticZenRuleState(zenRuleId, zenRuleCondition)
+    }
+
+    private suspend fun saveZenRuleId(context: Context, zenRuleId: String) {
+        context.dndPrefsDataStore.edit { settings ->
+            settings[PREF_KEY_ZEN_RULE_ID] = zenRuleId
+        }
+    }
+
+    private suspend fun getZenRuleId(context: Context): String {
+        return context.dndPrefsDataStore.data.map { preferences ->
+            preferences[PREF_KEY_ZEN_RULE_ID] ?: ""
+        }.first()
+    }
+
+    private fun createZenRule(context: Context): AutomaticZenRule {
+        val configurationActivity = ComponentName(
+            context.packageName,
+            SwitchButtonSettingsActivity::class.java.packageName + ".SwitchButtonSettingsActivity"
+        )
+        return AutomaticZenRule.Builder(getZenRuleName(), getZenRuleConditionUri(context))
+            .setEnabled(true)
+            .setOwner(configurationActivity)
+            .setConfigurationActivity(configurationActivity)
+            .setZenPolicy(
+                ZenPolicy.Builder()
+                    .allowCalls(ZenPolicy.PEOPLE_TYPE_NONE)
+                    .allowMessages(ZenPolicy.PEOPLE_TYPE_NONE)
+                    .allowSystem(true)
+                    .allowAlarms(true)
+                    .build()
+            )
+            .build()
     }
 }

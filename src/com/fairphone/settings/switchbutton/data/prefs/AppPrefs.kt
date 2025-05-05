@@ -23,17 +23,23 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.fairphone.settings.switchbutton.data.model.SwitchState
+import com.fairphone.settings.switchbutton.util.Constants
+import com.fairphone.settings.switchbutton.util.dataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 const val APP_PREFS_DATASTORE = "app_prefs"
 val Context.appPrefs: DataStore<Preferences> by preferencesDataStore(name = APP_PREFS_DATASTORE)
 
-class AppPrefs(private val dataStore: DataStore<Preferences>) {
+class AppPrefs(context: Context) {
+
+    private val dataStore: DataStore<Preferences> = context.appPrefs
 
     companion object {
-        val KEY_SWITCH_STATE = stringPreferencesKey("switch_state")
-        val DEFAULT_SWITCH_STATE = SwitchState.DOWN.name
+        private val DEFAULT_SWITCH_STATE = SwitchState.DOWN.name
+        private val KEY_SWITCH_STATE = stringPreferencesKey("switch_state")
+        private val PREF_KEY_DEFAULT_HOME_APP = stringPreferencesKey("default_home_app")
     }
 
     fun getLastKnownSwitchStateFlow(): Flow<SwitchState> {
@@ -45,6 +51,24 @@ class AppPrefs(private val dataStore: DataStore<Preferences>) {
     suspend fun setLastKnownSwitchState(state: SwitchState) {
         dataStore.edit { prefs ->
             prefs[KEY_SWITCH_STATE] = state.name
+        }
+    }
+
+    /**
+     * Get the saved default home app package name.
+     */
+    suspend fun getSavedHomeApp(context: Context): String {
+        return dataStore.data.map { prefs ->
+            prefs[PREF_KEY_DEFAULT_HOME_APP] ?: Constants.STOCK_ANDROID_LAUNCHER_PACKAGE_NAME
+        }.first()
+    }
+
+    /**
+     * Save the default home app package name.
+     */
+    suspend fun saveDefaultHomeApp(context: Context, packageName: String) {
+        context.dataStore.edit { prefs ->
+            prefs[PREF_KEY_DEFAULT_HOME_APP] = packageName
         }
     }
 }

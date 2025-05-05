@@ -29,7 +29,7 @@ import androidx.work.workDataOf
 /**
  * Worker class for updating the lockscreen wallpaper.
  */
-class LockscreenWallpaperWorker(
+class LockscreenWallpaperSwitcherWorker(
     appContext: Context,
     params: WorkerParameters
 ) : CoroutineWorker(appContext, params) {
@@ -52,7 +52,7 @@ class LockscreenWallpaperWorker(
             val inputData = workDataOf(KEY_ENABLE to isDetoxEnabled)
 
             // Create a OneTimeWorkRequest for the worker
-            val wallpaperWorkRequest = OneTimeWorkRequestBuilder<LockscreenWallpaperWorker>()
+            val wallpaperWorkRequest = OneTimeWorkRequestBuilder<LockscreenWallpaperSwitcherWorker>()
                 .setInputData(inputData)
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                 .build()

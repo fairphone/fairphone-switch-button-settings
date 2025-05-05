@@ -20,22 +20,17 @@ package com.fairphone.settings.switchbutton.action
 import android.content.Context
 import android.util.Log
 import com.fairphone.settings.switchbutton.data.model.SwitchState
-import com.fairphone.settings.switchbutton.util.LauncherUtils
+import com.fairphone.settings.switchbutton.util.LauncherSwitcherService
 
 object FairphoneMomentsSwitchActionHandler : SwitchActionHandler() {
     override suspend fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
+        val launcherService = LauncherSwitcherService.getInstance(context)
         return try {
             when (state) {
-                SwitchState.UP -> {
-                    LauncherUtils.disableDetoxMode(context)
-                }
-
-                SwitchState.DOWN -> {
-                    LauncherUtils.enableDetoxMode(context)
-                }
-                else -> Unit // ignore
+                SwitchState.UP -> launcherService.switchToUserLauncher(context)
+                SwitchState.DOWN -> launcherService.switchToFairphoneMoments(context)
+                else -> Result.success(Unit)
             }
-            Result.success(Unit)
         } catch (e: Exception) {
             Log.e("SpringLauncherSwitch", "Error", e)
             Result.failure(e)

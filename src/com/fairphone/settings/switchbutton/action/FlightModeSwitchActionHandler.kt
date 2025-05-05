@@ -18,12 +18,20 @@
 package com.fairphone.settings.switchbutton.action
 
 import android.content.Context
-import android.content.Intent
-import android.provider.Settings
 import android.util.Log
 import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.connectivityManager
 
+/**
+ * Handler for actions related to the Flight Mode switch button.
+ *
+ * This class is responsible for managing the enabling and disabling of flight mode based on the
+ * switch button state.
+ *
+ * It utilizes the ConnectivityManager to interact with the system's flight mode settings.
+ *
+ * @see SwitchActionHandler
+ */
 object FlightModeSwitchActionHandler : SwitchActionHandler() {
     override suspend fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
         return try {
@@ -50,20 +58,4 @@ object FlightModeSwitchActionHandler : SwitchActionHandler() {
             .connectivityManager()
             .setAirplaneMode(false)
     }
-
-    private fun setAirplaneModeSetting(context: Context, value: Boolean) {
-        // Change the system setting
-        Settings.Global.putInt(
-            context.contentResolver,
-            Settings.Global.AIRPLANE_MODE_ON,
-            value.toInt()
-        )
-
-        // Post the intent
-        val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-        intent.putExtra("state", value)
-        context.sendBroadcast(intent)
-    }
 }
-
-fun Boolean.toInt() = if (this) 1 else 0

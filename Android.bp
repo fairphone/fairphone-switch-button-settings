@@ -44,6 +44,7 @@ android_app {
     certificate: "platform",
     target_sdk_version: "current",
     min_sdk_version: "current",
+    java_version: "17",
     srcs: [
         "src/**/*.kt",
         "src/**/*.java",

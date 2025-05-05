@@ -79,9 +79,9 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
             // to allow new events to schedule immediately after processing starts.
             debounceRunnable = null
 
-            val pendingResult: PendingResult? = goAsync()
+            val pendingResult: PendingResult = goAsync()
 
-            val switchState = getSwitchState(intent) ?: run {
+            val switchState = SwitchButtonSettingsUtils.getSwitchState(intent) ?: run {
                 Log.e(TAG, "Could not read switch status")
                 return@Runnable
             }
@@ -96,9 +96,9 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
     private fun handleSwitchEvent(
         context: Context,
         state: SwitchState,
-        pendingResult: PendingResult?
+        pendingResult: PendingResult
     ) {
-        val appPrefs = AppPrefs(context.appPrefs)
+        val appPrefs = AppPrefs(context)
         val switchButtonAction = SwitchButtonSettingsUtils.getCurrentSwitchButtonAction(context)
         val handler = switchButtonAction.actionHandler
         val jobScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -137,20 +137,10 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
             }
         }.invokeOnCompletion {
             try {
-                pendingResult?.finish()
+                pendingResult.finish()
             } catch (e: Exception) {
                 Log.e(TAG, "Error finishing pending result", e)
             }
-        }
-    }
-
-    private fun getSwitchState(intent: Intent): SwitchState? {
-        val statusString = intent.getStringExtra(Constants.EXTRA_SWITCH_STATUS) ?: return null
-        return try {
-            SwitchState.valueOf(statusString)
-        } catch (e: IllegalArgumentException) {
-            Log.e("getSwitchState()", "Could not read switch status: $statusString", e)
-            null
         }
     }
 }

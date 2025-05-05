@@ -37,9 +37,11 @@ val Color_Content_Error = Color(0xff5c271f)
 val backgroundLight = Color(0xFFFDFDFC)
 val surfaceLight = Color(0xFFFFFFFF)
 val onSurfaceLight = Color(0xFF21201c)
+val onSurfaceVariantLight = Color(0xFF3B3B3B)
 
 val backgroundDark = Color(0xFF21201c)
 val surfaceDark = Color(0xFF2A2A2A)
 val onSurfaceDark = Color(0xFFFFFFFF)
+val onSurfaceVariantDark = Color(0xFF3B3B3B)
 
 val Color_Text_Disabled = Color(0xFF363636)

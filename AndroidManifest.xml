@@ -23,7 +23,6 @@
 
     <queries>
         <package android:name="com.fairphone.spring.launcher" />
-        <package android:name="com.fairphone.spring.core" />
     </queries>
 
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
@@ -45,6 +44,7 @@
 
     <application
         android:allowBackup="false"
+        android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"

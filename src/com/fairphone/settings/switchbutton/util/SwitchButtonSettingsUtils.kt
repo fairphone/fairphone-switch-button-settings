@@ -1,7 +1,9 @@
 package com.fairphone.settings.switchbutton.util
 
 import android.content.Context
+import android.content.Intent
 import android.provider.Settings
+import android.util.Log
 import com.fairphone.settings.switchbutton.action.SwitchActionHandler
 import com.fairphone.settings.switchbutton.data.model.SwitchButtonAction
 import com.fairphone.settings.switchbutton.data.model.SwitchButtonActions
@@ -57,6 +59,19 @@ object SwitchButtonSettingsUtils {
      */
     fun getSwitchButtonActionSettingHandler(context: Context): SwitchActionHandler {
         return getCurrentSwitchButtonAction(context).actionHandler
+    }
+
+    /**
+     * Get the state of the switch button from the intent received by the system.
+     */
+    fun getSwitchState(intent: Intent): SwitchState? {
+        val statusString = intent.getStringExtra(Constants.EXTRA_SWITCH_STATUS) ?: return null
+        return try {
+            SwitchState.valueOf(statusString)
+        } catch (e: IllegalArgumentException) {
+            Log.e("getSwitchState()", "Could not read switch status: $statusString", e)
+            null
+        }
     }
 
     /**
