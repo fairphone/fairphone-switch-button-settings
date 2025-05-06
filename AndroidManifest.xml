@@ -19,7 +19,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fairphone.settings.switchbutton"
-    android:sharedUserId="android.uid.system">
+    android:sharedUserId="android.uid.system"
+    android:versionName="2">
 
     <queries>
         <package android:name="com.fairphone.spring.launcher" />
