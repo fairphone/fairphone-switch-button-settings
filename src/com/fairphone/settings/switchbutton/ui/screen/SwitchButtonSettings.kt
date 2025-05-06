@@ -57,7 +57,7 @@ import com.fairphone.settings.switchbutton.ui.theme.SwitchButtonSettingsTheme
 import com.fairphone.settings.switchbutton.ui.theme.prefScreenHeaderTextStyle
 import com.fairphone.settings.switchbutton.ui.theme.prefSummaryTextStyle
 import com.fairphone.settings.switchbutton.util.SwitchButtonSettingsUtils
-import com.fairphone.settings.switchbutton.util.startSpringLauncherSettings
+import com.fairphone.settings.switchbutton.util.startFairphoneMomentsSettings
 
 @Composable
 fun SwitchButtonSettings() {
@@ -78,14 +78,14 @@ fun SwitchButtonSettings() {
     SwitchButtonSettingsScreen(
         actions = switchSettings,
         selectedSetting = selectedSetting,
-        isSwitchButtonDisabled = switchState == SwitchState.UP,
+        enabled = switchState == SwitchState.UP,
         onSettingSelected = { action ->
             SwitchButtonSettingsUtils.setSwitchButtonAction(context, action)
             selectedSetting = action
         },
         onOpenActionConfig = { action ->
             if (action == SwitchButtonAction.FairphoneMoments) {
-                context.startSpringLauncherSettings()
+                context.startFairphoneMomentsSettings()
             }
         }
     )
@@ -95,7 +95,7 @@ fun SwitchButtonSettings() {
 fun SwitchButtonSettingsScreen(
     actions: List<SwitchButtonAction>,
     selectedSetting: SwitchButtonAction,
-    isSwitchButtonDisabled: Boolean,
+    enabled: Boolean,
     onSettingSelected: (SwitchButtonAction) -> Unit,
     onOpenActionConfig: (SwitchButtonAction) -> Unit?,
 ) {
@@ -127,7 +127,7 @@ fun SwitchButtonSettingsScreen(
                 .height(320.dp)
         )
 
-        if (!isSwitchButtonDisabled) {
+        if (!enabled) {
             Box(Modifier.fillMaxWidth()) {
                 Text(
                     text = stringResource(R.string.disable_switch_to_change_setting_text),
@@ -152,11 +152,11 @@ fun SwitchButtonSettingsScreen(
                     title = stringResource(action.titleResId),
                     summary = stringResource(action.summaryResId),
                     selected = selectedSetting.key == action.key,
-                    enabled = isSwitchButtonDisabled,
+                    enabled = enabled,
                     onRadioButtonClicked = { onSettingSelected(action) },
                     icon = action.icon,
                     onIconClicked = {
-                        if (isSwitchButtonDisabled) {
+                        if (enabled) {
                             onOpenActionConfig.invoke(action)
                         }
                     },
@@ -173,7 +173,7 @@ fun SwitchButtonSettings_Preview() {
         SwitchButtonSettingsScreen(
             actions = SwitchButtonSettingsUtils.getAllSwitchActions(LocalContext.current),
             selectedSetting = SwitchButtonAction.DoNotDisturb,
-            isSwitchButtonDisabled = true,
+            enabled = true,
             onSettingSelected = {},
             onOpenActionConfig = {}
         )

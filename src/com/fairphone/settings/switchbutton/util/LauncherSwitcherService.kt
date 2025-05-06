@@ -120,9 +120,8 @@ class LauncherSwitcherService {
             Log.d(Constants.LOG_TAG, "setting default home app: $packageName")
 
             try {
-                val roleManager = context.getSystemService(Context.ROLE_SERVICE) as RoleManager
                 val foregroundUser = ActivityManager.getCurrentUser()
-                roleManager.addRoleHolderAsUser(
+                context.roleManager().addRoleHolderAsUser(
                     RoleManager.ROLE_HOME,
                     packageName,
                     0,
@@ -147,8 +146,7 @@ class LauncherSwitcherService {
      * Get the default home app package name.
      */
     private fun getDefaultHomeAppPackageName(context: Context): String {
-        val roleManager = context.getSystemService(Context.ROLE_SERVICE) as RoleManager
-        return roleManager.getDefaultApplication(RoleManager.ROLE_HOME).run {
+        return context.roleManager().getDefaultApplication(RoleManager.ROLE_HOME).run {
             Log.d(Constants.LOG_TAG, "Default home app package name: $this")
             this
         } ?: throw IllegalStateException("Could not get default home app package name")

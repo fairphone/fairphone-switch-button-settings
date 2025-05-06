@@ -70,12 +70,12 @@ object DoNotDisturbSwitchActionHandler : SwitchActionHandler() {
     private fun getZenRuleConditionUri(context: Context) = context.packageName.toUri()
 
     private suspend fun startDND(context: Context) {
-        if (context.notificationManager().getAutomaticZenRule(getZenRuleId(context)) == null) {
-            val zenRule = createZenRule(context)
+        if (context.notificationManager().getAutomaticZenRule(getSavedZenRuleId(context)) == null) {
+            val zenRule = createDefaultZenRule(context)
             val zenRuleId = context.notificationManager().addAutomaticZenRule(zenRule)
             saveZenRuleId(context, zenRuleId)
         } else {
-            val zenRuleId = getZenRuleId(context)
+            val zenRuleId = getSavedZenRuleId(context)
             val zenRuleCondition = Condition(
                 getZenRuleConditionUri(context),
                 getZenRuleName(),
@@ -86,7 +86,7 @@ object DoNotDisturbSwitchActionHandler : SwitchActionHandler() {
     }
 
     private suspend fun stopDND(context: Context) {
-        val zenRuleId = getZenRuleId(context)
+        val zenRuleId = getSavedZenRuleId(context)
         val zenRuleCondition = Condition(
             getZenRuleConditionUri(context),
             getZenRuleName(),
@@ -101,13 +101,17 @@ object DoNotDisturbSwitchActionHandler : SwitchActionHandler() {
         }
     }
 
-    private suspend fun getZenRuleId(context: Context): String {
+    private suspend fun getSavedZenRuleId(context: Context): String {
         return context.dndPrefsDataStore.data.map { preferences ->
             preferences[PREF_KEY_ZEN_RULE_ID] ?: ""
         }.first()
     }
 
-    private fun createZenRule(context: Context): AutomaticZenRule {
+    /**
+     * Create a new default zen rule.
+     *
+     */
+    private fun createDefaultZenRule(context: Context): AutomaticZenRule {
         val configurationActivity = ComponentName(
             context.packageName,
             SwitchButtonSettingsActivity::class.java.packageName + ".SwitchButtonSettingsActivity"
@@ -120,7 +124,7 @@ object DoNotDisturbSwitchActionHandler : SwitchActionHandler() {
                 ZenPolicy.Builder()
                     .allowCalls(ZenPolicy.PEOPLE_TYPE_NONE)
                     .allowMessages(ZenPolicy.PEOPLE_TYPE_NONE)
-                    .allowSystem(true)
+                    .allowSystem(false)
                     .allowAlarms(true)
                     .build()
             )

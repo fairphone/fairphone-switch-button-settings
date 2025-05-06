@@ -20,6 +20,7 @@ package com.fairphone.settings.switchbutton.util
 import android.app.NotificationManager
 import android.app.UiModeManager
 import android.app.WallpaperManager
+import android.app.role.RoleManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -43,6 +44,8 @@ fun Context.uiModeManager() = getSystemService(Context.UI_MODE_SERVICE) as UiMod
 fun Context.connectivityManager() =
     getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+fun Context.roleManager() = getSystemService(Context.ROLE_SERVICE) as RoleManager
+
 fun Context.isDarkModeEnabled(): Boolean {
     return uiModeManager().nightMode == UiModeManager.MODE_NIGHT_YES
 }
@@ -59,7 +62,10 @@ fun Context.isPackageAvailable(packageName: String): Boolean = try {
     false
 }
 
-fun Context.startSpringLauncherSettings() = try {
+/**
+ * Start the fairphone moments settings activity.
+ */
+fun Context.startFairphoneMomentsSettings() = try {
     val intent = Intent(Constants.ACTION_SPRING_LAUNCHER_SETTINGS).apply {
         `package` = Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME
         component = ComponentName(
