@@ -49,12 +49,12 @@ fun Context.isDarkModeEnabled(): Boolean {
 
 fun Context.wallpaperManager() = getSystemService(Context.WALLPAPER_SERVICE) as WallpaperManager
 
-fun Context.isFairphoneMomentsAvailable(): Boolean = try {
-    packageManager
-        .getPackageInfo(
-            Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME,
-            PackageManager.GET_META_DATA
-        ) != null
+fun Context.isFairphoneMomentsAvailable(): Boolean =
+    isPackageAvailable(Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME)
+
+fun Context.isPackageAvailable(packageName: String): Boolean = try {
+    packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
+    true
 } catch (e: PackageManager.NameNotFoundException) {
     false
 }

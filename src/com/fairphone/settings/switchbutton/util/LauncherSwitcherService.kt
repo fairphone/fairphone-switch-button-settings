@@ -24,16 +24,8 @@ import android.content.Intent
 import android.os.UserHandle
 import android.util.Log
 import androidx.core.content.ContextCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.data.prefs.AppPrefs
 import kotlin.coroutines.resume
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 class LauncherSwitcherService(private val appPrefs: AppPrefs) {
@@ -58,8 +50,13 @@ class LauncherSwitcherService(private val appPrefs: AppPrefs) {
      * - Set lockscreen wallpaper.
      */
     suspend fun switchToUserLauncher(context: Context): Result<Unit> {
-        // Switch default launcher
         val shouldShowOverlayAnimation = shouldShowOverlayAnimation(context)
+        val userLauncherApp = appPrefs.getSavedHomeApp(context)
+
+        // Check if user launcher app is available
+        if (!context.isPackageAvailable(userLauncherApp)) {
+            return Result.failure(Exception("User launcher app is not available"))
+        }
         val homeAppSetSuccess = setDefaultHomeAppAsync(context, appPrefs.getSavedHomeApp(context))
         if (homeAppSetSuccess) {
             // Start switch state change activity in detox launcher to display overlay
@@ -88,6 +85,10 @@ class LauncherSwitcherService(private val appPrefs: AppPrefs) {
      * - Set lockscreen wallpaper.
      */
     suspend fun switchToFairphoneMoments(context: Context): Result<Unit> {
+        // Check if Fairphone Moments is available
+        if (!context.isFairphoneMomentsAvailable()) {
+            return Result.failure(Exception("Fairphone Moments is not available"))
+        }
         val shouldShowOverlayAnimation = shouldShowOverlayAnimation(context)
         val currentHomeApp = getDefaultHomeAppPackageName(context)
         appPrefs.saveDefaultHomeApp(context, currentHomeApp)
@@ -126,9 +127,6 @@ class LauncherSwitcherService(private val appPrefs: AppPrefs) {
             Log.d(Constants.LOG_TAG, "setting default home app: $packageName")
 
             try {
-                val userManager =
-                    context.getSystemService(Context.USER_SERVICE) as android.os.UserManager
-                val profiles = userManager.userProfiles
                 val roleManager = context.getSystemService(Context.ROLE_SERVICE) as RoleManager
                 val foregroundUser = ActivityManager.getCurrentUser()
                 roleManager.addRoleHolderAsUser(
