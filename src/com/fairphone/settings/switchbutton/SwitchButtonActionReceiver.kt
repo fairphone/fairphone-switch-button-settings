@@ -24,7 +24,6 @@ import android.os.Looper
 import android.util.Log
 import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.data.prefs.AppPrefs
-import com.fairphone.settings.switchbutton.data.prefs.appPrefs
 import com.fairphone.settings.switchbutton.util.Constants
 import com.fairphone.settings.switchbutton.util.SwitchButtonSettingsUtils
 import com.fairphone.settings.switchbutton.util.isUserSetupComplete
@@ -57,6 +56,7 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
             Log.d(TAG, "User setup is not complete yet, ignoring broadcast")
             return
         }
+        // TODO: Ignore if fairphone setup is not complete yet
 
         handlerDebounce(context, intent)
     }

@@ -24,8 +24,8 @@ import com.fairphone.settings.switchbutton.util.LauncherSwitcherService
 
 object FairphoneMomentsSwitchActionHandler : SwitchActionHandler() {
     override suspend fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
-        val launcherService = LauncherSwitcherService.getInstance(context)
         return try {
+            val launcherService = LauncherSwitcherService()
             when (state) {
                 SwitchState.UP -> launcherService.switchToUserLauncher(context)
                 SwitchState.DOWN -> launcherService.switchToFairphoneMoments(context)

@@ -24,7 +24,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.Constants
-import com.fairphone.settings.switchbutton.util.dataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -57,7 +56,7 @@ class AppPrefs(context: Context) {
     /**
      * Get the saved default home app package name.
      */
-    suspend fun getSavedHomeApp(context: Context): String {
+    suspend fun getSavedHomeApp(): String {
         return dataStore.data.map { prefs ->
             prefs[PREF_KEY_DEFAULT_HOME_APP] ?: Constants.STOCK_ANDROID_LAUNCHER_PACKAGE_NAME
         }.first()
@@ -66,8 +65,8 @@ class AppPrefs(context: Context) {
     /**
      * Save the default home app package name.
      */
-    suspend fun saveDefaultHomeApp(context: Context, packageName: String) {
-        context.dataStore.edit { prefs ->
+    suspend fun saveDefaultHomeApp(packageName: String) {
+        dataStore.edit { prefs ->
             prefs[PREF_KEY_DEFAULT_HOME_APP] = packageName
         }
     }

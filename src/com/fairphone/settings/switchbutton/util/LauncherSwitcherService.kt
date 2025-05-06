@@ -28,18 +28,7 @@ import com.fairphone.settings.switchbutton.data.prefs.AppPrefs
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-class LauncherSwitcherService(private val appPrefs: AppPrefs) {
-
-    companion object {
-        private var instance: LauncherSwitcherService? = null
-
-        fun getInstance(context: Context): LauncherSwitcherService {
-            if (instance == null) {
-                instance = LauncherSwitcherService(AppPrefs(context))
-            }
-            return instance!!
-        }
-    }
+class LauncherSwitcherService {
 
     /**
      * Switch to user default preferred launcher.
@@ -50,14 +39,16 @@ class LauncherSwitcherService(private val appPrefs: AppPrefs) {
      * - Set lockscreen wallpaper.
      */
     suspend fun switchToUserLauncher(context: Context): Result<Unit> {
+        val appPrefs = AppPrefs(context)
+        val userLauncherApp = appPrefs.getSavedHomeApp()
         val shouldShowOverlayAnimation = shouldShowOverlayAnimation(context)
-        val userLauncherApp = appPrefs.getSavedHomeApp(context)
+
 
         // Check if user launcher app is available
         if (!context.isPackageAvailable(userLauncherApp)) {
             return Result.failure(Exception("User launcher app is not available"))
         }
-        val homeAppSetSuccess = setDefaultHomeAppAsync(context, appPrefs.getSavedHomeApp(context))
+        val homeAppSetSuccess = setDefaultHomeAppAsync(context, userLauncherApp)
         if (homeAppSetSuccess) {
             // Start switch state change activity in detox launcher to display overlay
             startSwitchStateChangeActivity(
@@ -89,9 +80,11 @@ class LauncherSwitcherService(private val appPrefs: AppPrefs) {
         if (!context.isFairphoneMomentsAvailable()) {
             return Result.failure(Exception("Fairphone Moments is not available"))
         }
-        val shouldShowOverlayAnimation = shouldShowOverlayAnimation(context)
+        val appPrefs = AppPrefs(context)
         val currentHomeApp = getDefaultHomeAppPackageName(context)
-        appPrefs.saveDefaultHomeApp(context, currentHomeApp)
+        appPrefs.saveDefaultHomeApp(currentHomeApp)
+        val shouldShowOverlayAnimation = shouldShowOverlayAnimation(context)
+
 
         // Switch default launcher
         val homeAppSetSuccess =
