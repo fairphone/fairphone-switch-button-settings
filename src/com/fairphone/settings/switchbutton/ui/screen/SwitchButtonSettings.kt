@@ -30,8 +30,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,8 +66,34 @@ import com.fairphone.settings.switchbutton.ui.theme.prefSummaryTextStyle
 import com.fairphone.settings.switchbutton.util.SwitchButtonSettingsUtils
 import com.fairphone.settings.switchbutton.util.startFairphoneMomentsSettings
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SwitchButtonSettings() {
+fun SwitchButtonSettings(onNavigateBack: () -> Unit) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {},
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+                }
+            )
+        },
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            SwitchButtonSettingsScreen()
+        }
+    }
+}
+
+@Composable
+fun SwitchButtonSettingsScreen() {
     val context = LocalContext.current.applicationContext
     val appPrefs = remember { AppPrefs(context) }
 
@@ -107,14 +140,14 @@ fun SwitchButtonSettingsScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 32.dp)
 
     ) {
         Text(
             text = stringResource(R.string.pref_screen_header_switch),
             style = prefScreenHeaderTextStyle,
             modifier = Modifier
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 8.dp, vertical = 8.dp),
         )
 
         Image(
@@ -135,7 +168,7 @@ fun SwitchButtonSettingsScreen(
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(10.dp))
                         .fillMaxWidth()
                         .padding(vertical = 10.dp)
                 )

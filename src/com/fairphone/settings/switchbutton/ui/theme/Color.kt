@@ -35,12 +35,14 @@ val Color_Error_Critical = Color(0xffe54d2e)
 val Color_Content_Error = Color(0xff5c271f)
 
 val backgroundLight = Color(0xFFFDFDFC)
-val surfaceLight = Color(0xFFFFFFFF)
+val surfaceLight = Color(0xFFFDFDFC)
+val containerLight = Color(0xFFFFFFFF)
 val onSurfaceLight = Color(0xFF21201c)
 val onSurfaceVariantLight = Color(0xFF3B3B3B)
 
-val backgroundDark = Color(0xFF21201c)
-val surfaceDark = Color(0xFF2A2A2A)
+val backgroundDark = Color(0xFF1B1B1B)
+val surfaceDark = Color(0xFF1B1B1B)
+val containerDark = Color(0xFF2A2A2A)
 val onSurfaceDark = Color(0xFFFFFFFF)
 val onSurfaceVariantDark = Color(0xFF3B3B3B)
 

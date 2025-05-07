@@ -32,6 +32,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = Color_FP_Brand_Accent_Subtle,
     background = backgroundLight,
     surface = surfaceLight,
+    surfaceContainer = containerLight,
     onSurface = onSurfaceLight,
     onSurfaceVariant = onSurfaceVariantLight,
 )
@@ -42,6 +43,7 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = Color_FP_Brand_Accent_Subtle,
     background = backgroundDark,
     surface = surfaceDark,
+    surfaceContainer = containerDark,
     onSurface = onSurfaceDark,
     onSurfaceVariant = onSurfaceVariantDark,
 )
