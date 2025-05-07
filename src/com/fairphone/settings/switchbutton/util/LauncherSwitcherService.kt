@@ -40,13 +40,13 @@ class LauncherSwitcherService {
      */
     suspend fun switchToUserLauncher(context: Context): Result<Unit> {
         val appPrefs = AppPrefs(context)
-        val userLauncherApp = appPrefs.getSavedHomeApp()
+        var userLauncherApp = appPrefs.getSavedHomeApp()
         val shouldShowOverlayAnimation = shouldShowOverlayAnimation(context)
 
 
         // Check if user launcher app is available
         if (!context.isPackageAvailable(userLauncherApp)) {
-            return Result.failure(Exception("User launcher app is not available"))
+            userLauncherApp = Constants.STOCK_ANDROID_LAUNCHER_PACKAGE_NAME
         }
         val homeAppSetSuccess = setDefaultHomeAppAsync(context, userLauncherApp)
         if (homeAppSetSuccess) {
