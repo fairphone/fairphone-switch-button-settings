@@ -19,7 +19,6 @@ package com.fairphone.settings.switchbutton.util
 
 import android.app.NotificationManager
 import android.app.UiModeManager
-import android.app.WallpaperManager
 import android.app.role.RoleManager
 import android.content.ComponentName
 import android.content.Context
@@ -45,12 +44,6 @@ fun Context.connectivityManager() =
     getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
 fun Context.roleManager() = getSystemService(Context.ROLE_SERVICE) as RoleManager
-
-fun Context.isDarkModeEnabled(): Boolean {
-    return uiModeManager().nightMode == UiModeManager.MODE_NIGHT_YES
-}
-
-fun Context.wallpaperManager() = getSystemService(Context.WALLPAPER_SERVICE) as WallpaperManager
 
 fun Context.isFairphoneMomentsAvailable(): Boolean =
     isPackageAvailable(Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME)

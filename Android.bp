@@ -63,6 +63,5 @@ android_app {
         "androidx.compose.ui_ui-tooling",
         "androidx.compose.ui_ui-graphics",
         "androidx.datastore_datastore-preferences",
-        "androidx.work_work-runtime",
     ],
 }

@@ -36,7 +36,6 @@ class LauncherSwitcherService {
      * - Get the saved default home app package name.
      * - Set the default home app.
      * - Start switch state change activity in detox launcher to display overlay if needed.
-     * - Set lockscreen wallpaper.
      */
     suspend fun switchToUserLauncher(context: Context): Result<Unit> {
         val appPrefs = AppPrefs(context)
@@ -56,11 +55,7 @@ class LauncherSwitcherService {
                 detoxEnabled = false,
                 showOverlay = shouldShowOverlayAnimation
             )
-            // Set lockscreen wallpaper
-            LockscreenWallpaperSwitcherWorker.enqueueWallpaperWork(
-                context = context,
-                isDetoxEnabled = false
-            )
+            
             return Result.success(Unit)
         } else {
             return Result.failure(Exception("Failed to set default launcher"))
@@ -73,7 +68,6 @@ class LauncherSwitcherService {
      * - Saved default home app package name (to switch back later).
      * - Set the default home app.
      * - Start switch state change activity in detox launcher to display overlay if needed.
-     * - Set lockscreen wallpaper.
      */
     suspend fun switchToFairphoneMoments(context: Context): Result<Unit> {
         // Check if Fairphone Moments is available
@@ -100,11 +94,6 @@ class LauncherSwitcherService {
                 showOverlay = shouldShowOverlayAnimation
             )
 
-            // Set lockscreen wallpaper
-            LockscreenWallpaperSwitcherWorker.enqueueWallpaperWork(
-                context,
-                isDetoxEnabled = true
-            )
             return Result.success(Unit)
         } else {
             return Result.failure(Exception("Failed to set default launcher"))
