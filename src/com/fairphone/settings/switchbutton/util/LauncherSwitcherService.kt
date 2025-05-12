@@ -55,7 +55,7 @@ class LauncherSwitcherService {
                 detoxEnabled = false,
                 showOverlay = shouldShowOverlayAnimation
             )
-            
+
             return Result.success(Unit)
         } else {
             return Result.failure(Exception("Failed to set default launcher"))
@@ -137,7 +137,11 @@ class LauncherSwitcherService {
     private fun getDefaultHomeAppPackageName(context: Context): String {
         return context.roleManager().getDefaultApplication(RoleManager.ROLE_HOME).run {
             Log.d(Constants.LOG_TAG, "Default home app package name: $this")
-            this
+            if (this == Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME) {
+                Constants.STOCK_ANDROID_LAUNCHER_PACKAGE_NAME
+            } else {
+                this
+            }
         } ?: throw IllegalStateException("Could not get default home app package name")
     }
 
