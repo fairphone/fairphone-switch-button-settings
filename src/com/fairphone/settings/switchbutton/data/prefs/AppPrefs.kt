@@ -36,7 +36,7 @@ class AppPrefs(context: Context) {
     private val dataStore: DataStore<Preferences> = context.appPrefs
 
     companion object {
-        private val DEFAULT_SWITCH_STATE = SwitchState.DOWN.name
+        private val DEFAULT_SWITCH_STATE = SwitchState.UP.name
         private val KEY_SWITCH_STATE = stringPreferencesKey("switch_state")
         private val PREF_KEY_DEFAULT_HOME_APP = stringPreferencesKey("default_home_app")
         private val PREF_KEY_ZEN_RULE_ID = stringPreferencesKey("zen_rule_id")

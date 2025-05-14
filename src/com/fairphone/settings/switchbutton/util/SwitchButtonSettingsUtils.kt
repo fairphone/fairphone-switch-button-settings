@@ -16,7 +16,6 @@ object SwitchButtonSettingsUtils {
      * Global Settings used to store switch button related settings.
      */
     private const val SETTING_SWITCH_BUTTON_ACTION = Settings.Global.SWITCH_BUTTON_ACTION
-    private const val SETTING_SWITCH_BUTTON_STATE = Settings.Global.SWITCH_BUTTON_STATE
 
     /**
      * @return a list of all available actions for the switch button.
@@ -83,22 +82,4 @@ object SwitchButtonSettingsUtils {
         } else {
             SwitchButtonAction.DoNotDisturb
         }
-
-    /**
-     * Get the state of the switch button, saved in a Global Setting.
-     *
-     * 1 means "UP" and 0 means "DOWN"
-     */
-    fun getLastKnownSwitchButtonStateFromSystem(context: Context): SwitchState {
-        val settingValue = Settings.Global.getInt(
-            context.contentResolver,
-            SETTING_SWITCH_BUTTON_STATE,
-            1
-        )
-        return if (settingValue == 1) {
-            SwitchState.UP
-        } else {
-            SwitchState.DOWN
-        }
-    }
 }
