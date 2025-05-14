@@ -65,8 +65,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
-            <meta-data android:name="android.settings.title" android:value="@string/app_name" />
-            <meta-data android:name="android.settings.icon" android:resource="@drawable/ic_settings_switch_button" />
+            <meta-data
+                android:name="android.settings.title"
+                android:value="@string/pref_title_switch_button" />
+
+            <meta-data
+                android:name="com.android.settings.summary"
+                android:resource="@string/pref_summary_switch_button" />
+
+            <meta-data android:name="android.settings.icon"
+                android:resource="@drawable/ic_settings_switch_button" />
         </activity>
 
         <receiver

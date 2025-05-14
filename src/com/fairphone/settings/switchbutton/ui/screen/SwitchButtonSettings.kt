@@ -139,7 +139,7 @@ fun SwitchButtonSettingsScreen(
 
     ) {
         Text(
-            text = stringResource(R.string.pref_screen_header_switch),
+            text = stringResource(R.string.pref_title_switch_button),
             style = prefScreenHeaderTextStyle,
             modifier = Modifier
                 .padding(horizontal = 8.dp, vertical = 8.dp),

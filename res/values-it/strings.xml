@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 Fairphone B.V.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources>
+    <string name="pref_summary_switch_button">Scegli l\'azione associata allo Switch</string>
+    <string name="pref_summary_digital_detox">Attiva/disattiva Fairphone Moments</string>
+    <string name="pref_title_do_not_disturb">Non disturbare</string>
+    <string name="pref_summary_do_not_disturb">Attiva/disattiva Non disturbare</string>
+    <string name="pref_title_flight_mode">Modalità aereo</string>
+    <string name="pref_summary_flight_mode">attiva/disattiva la Modalità aereo</string>
+    <string name="pref_title_torch_light">Torcia</string>
+    <string name="pref_summary_torch_light">Accende/spegne la torcia</string>
+    <string name="pref_title_dark_mode">Tema Scuro / Chiaro</string>
+    <string name="pref_summary_dark_mode">Passa dal tema scuro a quello chiaro</string>
+    <string name="pref_title_battery_saver_mode">Risparmio energetico</string>
+    <string name="pref_summary_battery_saver_mode">Attiva/disattiva il risparmio energetico</string>
+    <string name="disable_switch_to_change_setting_text">Disabilita lo switch prima di modificare l\'azione ad esso assegnata</string>
+</resources>

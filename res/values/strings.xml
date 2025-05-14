@@ -17,26 +17,30 @@
   -->
 
 <resources>
-    <string name="app_name">Switch Button Settings</string>
+    <string name="app_name" translatable="false">Switch Button Settings</string>
 
-    <string name="pref_screen_header_switch">Switch</string>
+    <string name="pref_title_switch_button" translatable="false">Switch</string>
+    <string name="pref_summary_switch_button">Adjust the action associated with the switch</string>
 
-    <string name="pref_key_switch_action">pref_switch_action</string>
-    <string name="pref_title_switch_action">Switch Action</string>
-
-    <string name="pref_title_digital_detox">Fairphone Moments</string>
-    <string name="pref_title_do_not_disturb">Do Not Disturb</string>
-    <string name="pref_title_flight_mode">Flight Mode</string>
-    <string name="pref_title_torch_light">Torch Light</string>
-    <string name="pref_title_dark_mode">Dark &amp; Light Mode</string>
-    <string name="pref_title_battery_saver_mode">Battery Saver</string>
-
+    <string name="pref_title_digital_detox" translatable="false">Fairphone Moments</string>
     <string name="pref_summary_digital_detox">Turns on/off Fairphone Moments.\nYou can adjust those settings in the app</string>
+
+    <string name="pref_title_do_not_disturb">Do Not Disturb</string>
     <string name="pref_summary_do_not_disturb">Turns on/off Do Not Disturb</string>
+
+    <string name="pref_title_flight_mode">Flight Mode</string>
     <string name="pref_summary_flight_mode">Turns on/off flight Mode</string>
+
+    <string name="pref_title_torch_light">Torch Light</string>
     <string name="pref_summary_torch_light">Turns on/off the torch</string>
+
+    <string name="pref_title_dark_mode">Dark &amp; Light Mode</string>
     <string name="pref_summary_dark_mode">Switch between Dark &amp; Light mode</string>
+
+    <string name="pref_title_battery_saver_mode">Battery Saver</string>
     <string name="pref_summary_battery_saver_mode">Turns on/off battery saver</string>
+
+    <string name="disable_switch_to_change_setting_text">Disable switch before adjusting action assigned to it</string>
 
     <string-array name="switch_pref_entries">
         <item>@string/pref_title_digital_detox</item>
@@ -56,5 +60,4 @@
         <item>battery_saver_mode</item>
     </string-array>
 
-    <string name="disable_switch_to_change_setting_text">Disable switch before adjusting action assigned to it</string>
 </resources>
