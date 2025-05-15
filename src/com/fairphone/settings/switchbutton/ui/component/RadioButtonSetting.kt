@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,9 +45,9 @@ fun RadioButtonSetting(
             enabled = enabled,
             selected = selected,
             onClick = onRadioButtonClicked,
-            colors = RadioButtonDefaults.colors(
-                selectedColor = MaterialTheme.colorScheme.secondary,
-            )
+            //colors = RadioButtonDefaults.colors(
+            //    selectedColor = MaterialTheme.colorScheme.secondary,
+            //)
         )
 
         Column(
@@ -59,7 +58,7 @@ fun RadioButtonSetting(
                 text = title,
                 style = prefTitleTextStyle,
                 color = if (enabled) {
-                    MaterialTheme.colorScheme.onSurface
+                    MaterialTheme.colorScheme.onBackground
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 }
@@ -68,7 +67,7 @@ fun RadioButtonSetting(
                 text = summary,
                 style = prefSummaryTextStyle,
                 color = if (enabled) {
-                    MaterialTheme.colorScheme.onSurface
+                    MaterialTheme.colorScheme.onBackground
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 }

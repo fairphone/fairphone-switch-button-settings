@@ -22,7 +22,7 @@
     <string name="pref_title_do_not_disturb">Non disturbare</string>
     <string name="pref_summary_do_not_disturb">Attiva/disattiva Non disturbare</string>
     <string name="pref_title_flight_mode">Modalità aereo</string>
-    <string name="pref_summary_flight_mode">attiva/disattiva la Modalità aereo</string>
+    <string name="pref_summary_flight_mode">Attiva/disattiva la Modalità aereo</string>
     <string name="pref_title_torch_light">Torcia</string>
     <string name="pref_summary_torch_light">Accende/spegne la torcia</string>
     <string name="pref_title_dark_mode">Tema Scuro / Chiaro</string>

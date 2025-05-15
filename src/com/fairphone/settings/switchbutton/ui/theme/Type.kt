@@ -34,7 +34,7 @@ val prefScreenHeaderTextStyle =
 val prefTitleTextStyle =
     TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 22.sp
     )
@@ -43,8 +43,8 @@ val prefSummaryTextStyle =
     TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        lineHeight = 16.sp
+        fontSize = 14.sp,
+        lineHeight = 18.sp,
     )
 
 // Set of Material typography styles to start with
