@@ -17,8 +17,6 @@
 
 package com.fairphone.settings.switchbutton.data.model
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.fairphone.settings.switchbutton.R
 import com.fairphone.settings.switchbutton.action.DarkModeModeSwitchActionHandler
@@ -48,7 +46,8 @@ enum class SwitchButtonAction(
         key = KEY_SWITCH_SETTING_FAIRPHONE_MOMENTS,
         titleResId = R.string.pref_title_digital_detox,
         summaryResId = R.string.pref_summary_digital_detox,
-        icon = Icons.Default.Settings,
+        // TODO: Hide gear icon for now. See https://gitlab.fairphone.com/mobile-applications/fp6-apps/fp6-digital-detox/-/issues/126
+        // icon = Icons.Default.Settings,
         settingValue = 1,
         actionHandler = FairphoneMomentsSwitchActionHandler,
     ),
