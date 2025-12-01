@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) 2025 FairPhone B.V.
+ *
+ * SPDX-FileCopyrightText: 2025. FairPhone B.V.
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 package com.fairphone.settings.switchbutton.ui.component
 
 import androidx.compose.foundation.clickable

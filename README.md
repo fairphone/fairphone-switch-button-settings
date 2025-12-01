@@ -1,7 +1,7 @@
 # SwitchButtonSettings
 
 This application provides settings for controlling the SwitchButton functionality.
-It interacts with SpringLauncherCore and SpringLauncherApp to enable and configure the Detox feature.
+It interacts with Fairphone Moments to enable and configure the Detox feature.
 
 ## Functionality
 
@@ -31,3 +31,7 @@ that should be pre-granted to the package for correct functionality of the featu
 This app IS A PRIVILEGED APP THAT NEEDS TO BE SIGNED WITH PLATFORM KEYS.
 
 There is a Android.bp file included, to facilitate the integration of the app.
+
+## License
+
+The project is licensed under EUPL-1.2.

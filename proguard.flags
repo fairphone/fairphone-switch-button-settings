@@ -1,5 +1,8 @@
-# This is a configuration file for ProGuard.
-# http://proguard.sourceforge.net/index.html#manual/usage.html
+# Copyright (C) 2025 FairPhone B.V.
+#
+# SPDX-FileCopyrightText: 2025. FairPhone B.V.
+#
+# SPDX-License-Identifier: EUPL-1.2
 
 # Fairphone
 -keep class com.fairphone.settings.** { *; }

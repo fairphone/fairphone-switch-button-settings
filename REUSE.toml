@@ -1,0 +1,20 @@
+version = 1
+
+[[annotations]]
+path = [
+    "README.md",
+    "NOTICES.md",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2025. FairPhone B.V."
+SPDX-License-Identifier = "EUPL-1.2"
+
+[[annotations]]
+path = [
+    "CleanSpec.mk",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "Apache License 2.0"
+SPDX-License-Identifier = "Apache-2.0"
+
+
