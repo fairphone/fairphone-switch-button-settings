@@ -49,18 +49,20 @@ fun Context.isPackageAvailable(packageName: String): Boolean = try {
 /**
  * Start the fairphone moments settings activity.
  */
-fun Context.startFairphoneMomentsSettings() = try {
-    val intent = Intent(Constants.ACTION_SPRING_LAUNCHER_SETTINGS).apply {
-        `package` = Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME
-        component = ComponentName(
-            Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME,
-            Constants.FAIRPHONE_MOMENTS_SETTINGS_ACTIVITY,
-        )
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+fun Context.startFairphoneMomentsSettings() {
+    try {
+        val intent = Intent(Constants.ACTION_SPRING_LAUNCHER_SETTINGS).apply {
+            `package` = Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME
+            component = ComponentName(
+                Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME,
+                Constants.FAIRPHONE_MOMENTS_SETTINGS_ACTIVITY,
+            )
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+    } catch (e: Exception) {
+        Log.e("SwitchButtonSetting", "Error starting spring launcher settings", e)
     }
-    startActivity(intent)
-} catch (e: Exception) {
-    Log.e("SwitchButtonSetting", "Error starting spring launcher settings", e)
 }
 
 /**
