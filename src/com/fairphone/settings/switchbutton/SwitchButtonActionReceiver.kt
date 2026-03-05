@@ -30,7 +30,7 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
         private const val TAG = "SwitchButtonReceiver"
 
         // How long to wait after the last switch flip before processing.
-        private const val DEBOUNCE_DELAY_MS = 300L // 0.3 seconds
+        private const val DEBOUNCE_DELAY_MS = 150L // 0.15 seconds
 
         // Handler for robust debouncing approach
         private val debounceHandler = Handler(Looper.getMainLooper())
