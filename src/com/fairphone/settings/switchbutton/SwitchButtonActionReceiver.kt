@@ -23,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class SwitchButtonActionReceiver : BroadcastReceiver() {
@@ -71,13 +72,11 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
             // to allow new events to schedule immediately after processing starts.
             debounceRunnable = null
 
-            val pendingResult: PendingResult = goAsync()
-
             val switchState = SwitchButtonSettingsUtils.getSwitchState(intent) ?: run {
                 Log.e(TAG, "Could not read switch status")
                 return@Runnable
             }
-            handleSwitchEvent(context, switchState, pendingResult)
+            handleSwitchEvent(context, switchState)
         }
 
         // 3. Post the new runnable with the specified delay.
@@ -88,7 +87,6 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
     private fun handleSwitchEvent(
         context: Context,
         state: SwitchState,
-        pendingResult: PendingResult
     ) {
         val appPrefs = AppPrefs(context)
         val switchButtonAction = SwitchButtonSettingsUtils.getCurrentSwitchButtonAction(context)
@@ -96,6 +94,12 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
         val jobScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
         jobScope.launch {
+            val lastKnownSwitchState = appPrefs.getLastKnownSwitchStateFlow().first()
+            if (lastKnownSwitchState == state) {
+                Log.d(TAG, "Ignoring switch event with same state: $state")
+                return@launch
+            }
+
             Log.d(TAG, "Handling switch event for action: $switchButtonAction")
             var currentState = if (state == SwitchState.UP) {
                 SwitchState.PENDING_UP
@@ -126,12 +130,6 @@ class SwitchButtonActionReceiver : BroadcastReceiver() {
                 Log.e(TAG, "Error instantiating action handler for '$switchButtonAction': ${e.message}", e)
             } finally {
                 jobScope.cancel()
-            }
-        }.invokeOnCompletion {
-            try {
-                pendingResult.finish()
-            } catch (e: Exception) {
-                Log.e(TAG, "Error finishing pending result", e)
             }
         }
     }
