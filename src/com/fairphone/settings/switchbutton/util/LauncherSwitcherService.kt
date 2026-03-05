@@ -126,6 +126,7 @@ class LauncherSwitcherService {
     /**
      * Get the default home app package name.
      */
+    @SuppressLint("MissingPermission")
     private fun getDefaultHomeAppPackageName(context: Context): String {
         return context.roleManager().getDefaultApplication(RoleManager.ROLE_HOME).run {
             Log.d(Constants.LOG_TAG, "Default home app package name: $this")
@@ -177,18 +178,24 @@ class LauncherSwitcherService {
             // Get the foreground task
             val runningTasks = am.getRunningTasks(1)
             val defaultHomeAppPackage = getDefaultHomeAppPackageName(context)
-            runningTasks?.getOrNull(0)?.topActivity?.let { topActivity ->
-                Log.d(Constants.LOG_TAG, "Top activity package: ${topActivity.packageName}")
-                Log.d(Constants.LOG_TAG, "Top activity name: ${topActivity.className}")
-                Log.d(Constants.LOG_TAG, "Default home app package: $defaultHomeAppPackage")
-                return when {
-                    topActivity.packageName == defaultHomeAppPackage -> false
-                    topActivity.packageName == Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME
-                            && topActivity.className == Constants.FAIRPHONE_MOMENTS_HOME_ACTIVITY -> false
+            val topActivity = runningTasks?.getOrNull(0)?.topActivity
 
-                    else -> true
-                }
-            } ?: true
+            if (topActivity == null) {
+                Log.e(Constants.LOG_TAG, "Could not get top activity")
+                return true
+            }
+
+            Log.d(Constants.LOG_TAG, "Top activity package: ${topActivity.packageName}" +
+                    "\nTop activity class: ${topActivity.className}" +
+                    "\nDefault home app package: $defaultHomeAppPackage")
+
+            return when {
+                topActivity.packageName == defaultHomeAppPackage -> false
+                topActivity.packageName == Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME
+                        && topActivity.className == Constants.FAIRPHONE_MOMENTS_HOME_ACTIVITY -> false
+
+                else -> true
+            }
         } catch (e: SecurityException) {
             Log.e(Constants.LOG_TAG, "Permission needed for getRunningTasks")
         }
