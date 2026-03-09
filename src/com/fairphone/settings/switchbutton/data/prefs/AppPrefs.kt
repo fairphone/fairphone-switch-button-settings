@@ -31,7 +31,6 @@ class AppPrefs(context: Context) {
         private val DEFAULT_SWITCH_STATE = SwitchState.UP.name
         private val KEY_SWITCH_STATE = stringPreferencesKey("switch_state")
         private val PREF_KEY_DEFAULT_HOME_APP = stringPreferencesKey("default_home_app")
-        private val PREF_KEY_ZEN_RULE_ID = stringPreferencesKey("zen_rule_id")
     }
 
     fun getLastKnownSwitchStateFlow(): Flow<SwitchState> {
@@ -62,17 +61,5 @@ class AppPrefs(context: Context) {
         dataStore.edit { prefs ->
             prefs[PREF_KEY_DEFAULT_HOME_APP] = packageName
         }
-    }
-
-    suspend fun saveZenRuleId(zenRuleId: String) {
-        dataStore.edit { settings ->
-            settings[PREF_KEY_ZEN_RULE_ID] = zenRuleId
-        }
-    }
-
-    suspend fun getSavedZenRuleId(): String {
-        return dataStore.data.map { preferences ->
-            preferences[PREF_KEY_ZEN_RULE_ID] ?: ""
-        }.first()
     }
 }
