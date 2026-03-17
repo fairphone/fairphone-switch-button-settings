@@ -67,12 +67,12 @@
                 android:resource="@drawable/ic_settings_switch_button" />
         </activity>
 
-        <receiver
-            android:name=".SwitchButtonActionReceiver"
+        <service
+            android:name=".SwitchButtonService"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.fairphone.action.SWITCH_STATE_CHANGED" />
+                <action android:name="com.fairphone.settings.switchbutton.SwitchButtonService" />
             </intent-filter>
-        </receiver>
+        </service>
     </application>
 </manifest>
