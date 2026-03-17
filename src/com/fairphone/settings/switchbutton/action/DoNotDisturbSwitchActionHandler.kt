@@ -10,8 +10,6 @@ package com.fairphone.settings.switchbutton.action
 
 import android.content.Context
 import android.provider.Settings
-import android.util.Log
-import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.notificationManager
 
 /**
@@ -26,38 +24,38 @@ object DoNotDisturbSwitchActionHandler : SwitchActionHandler() {
 
     const val ZEN_MODE_REASON = "SwitchButton"
 
-    override suspend fun onSwitchButtonStateChanged(
-        context: Context,
-        state: SwitchState
-    ): Result<Unit> {
-        return try {
-            when (state) {
-                SwitchState.UP -> stopDND(context)
-                SwitchState.DOWN -> startDND(context)
-                else -> Unit // ignore
-            }
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Log.e("DoNotDisturbSwitch", "Error", e)
-            Result.failure(e)
+    override suspend fun onSwitchStateUp(context: Context): Result<Unit> {
+        return toggleDoNotDisturb(context, false)
+    }
+
+    override suspend fun onSwitchStateDown(context: Context): Result<Unit> {
+        return toggleDoNotDisturb(context, true)
+    }
+
+    /**
+     * Toggles the "Do Not Disturb" mode for the device.
+     *
+     * This method enables or disables the "Do Not Disturb" mode by setting the system's zen mode.
+     * It uses the `NotificationManager` to apply the changes.
+     *
+     * @param context The context used to access the system's `NotificationManager` service.
+     * @param enable A boolean flag indicating whether to enable or disable the "Do Not Disturb" mode.
+     *               Set to `true` to enable "Do Not Disturb", or `false` to disable it.
+     * @return A [Result] containing a success status if the operation completes
+     *         without errors, or a failure status if an exception occurs.
+     */
+    private fun toggleDoNotDisturb(context: Context, enable: Boolean): Result<Unit> {
+        val zenMode = if (enable) {
+            Settings.Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS
+        } else {
+            Settings.Global.ZEN_MODE_OFF
         }
-    }
-
-    private fun startDND(context: Context) {
         context.notificationManager().setZenMode(
-            Settings.Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS,
+            zenMode,
             null,
             ZEN_MODE_REASON,
             true,
         )
-    }
-
-    private fun stopDND(context: Context) {
-        context.notificationManager().setZenMode(
-            Settings.Global.ZEN_MODE_OFF,
-            null,
-            ZEN_MODE_REASON,
-            true,
-        )
+        return Result.success(Unit)
     }
 }

@@ -10,20 +10,28 @@ package com.fairphone.settings.switchbutton.data.model
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.fairphone.settings.switchbutton.R
+import com.fairphone.settings.switchbutton.action.BlueLightFilterSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.DarkModeModeSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.DoNotDisturbSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.FairphoneMomentsSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.FlightModeSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.PowerSaverModeSwitchActionHandler
+import com.fairphone.settings.switchbutton.action.SoundProfilesSwitchActionHandler
 import com.fairphone.settings.switchbutton.action.SwitchActionHandler
 import com.fairphone.settings.switchbutton.action.TorchLightSwitchActionHandler
+import com.fairphone.settings.switchbutton.action.WorkProfileSwitchActionHandler
+import com.fairphone.settings.switchbutton.action.emptyActionHandler
 
 const val KEY_SWITCH_SETTING_DO_NOT_DISTURB = "setting_switch_do_not_disturb"
 const val KEY_SWITCH_SETTING_FLIGHT_MODE = "setting_switch_flight_mode"
 const val KEY_SWITCH_SETTING_TORCH_LIGHT = "setting_switch_torch_light"
 const val KEY_SWITCH_SETTING_DARK_MODE = "setting_switch_dark_mode"
 const val KEY_SWITCH_SETTING_POWER_SAVER = "setting_switch_power_saver"
+const val KEY_SWITCH_SETTING_DO_NOTHING = "setting_switch_do_nothing"
 const val KEY_SWITCH_SETTING_FAIRPHONE_MOMENTS = "setting_switch_fairphone_moments"
+const val KEY_SWITCH_SETTING_WORK_PROFILE = "setting_switch_work_profile"
+const val KEY_SWITCH_SETTING_SOUND_PROFILES = "setting_switch_sound_profiles"
+const val KEY_SWITCH_SETTING_BLUE_LIGHT_FILTER = "setting_switch_blue_light_filter"
 
 enum class SwitchButtonAction(
     val key: String,
@@ -81,6 +89,38 @@ enum class SwitchButtonAction(
         summaryResId = R.string.pref_summary_battery_saver_mode,
         settingValue = 6,
         actionHandler = PowerSaverModeSwitchActionHandler,
+    ),
+
+    WorkProfile(
+        key = KEY_SWITCH_SETTING_WORK_PROFILE,
+        titleResId = R.string.pref_title_work_profile,
+        summaryResId = R.string.pref_summary_work_profile,
+        settingValue = 7,
+        actionHandler = WorkProfileSwitchActionHandler,
+    ),
+
+    DoNothing(
+        key = KEY_SWITCH_SETTING_DO_NOTHING,
+        titleResId = R.string.pref_title_do_nothing,
+        summaryResId = R.string.pref_summary_do_nothing,
+        settingValue = 8,
+        actionHandler = emptyActionHandler
+    ),
+
+    SoundProfiles(
+        key = KEY_SWITCH_SETTING_SOUND_PROFILES,
+        titleResId = R.string.pref_title_sound_profiles,
+        summaryResId = R.string.pref_summary_sound_profiles,
+        settingValue = 9,
+        actionHandler = SoundProfilesSwitchActionHandler,
+    ),
+
+    BlueLightFilter(
+        key = KEY_SWITCH_SETTING_BLUE_LIGHT_FILTER,
+        titleResId = R.string.pref_title_blue_light_filter,
+        summaryResId = R.string.pref_summary_blue_light_filter,
+        settingValue = 10,
+        actionHandler = BlueLightFilterSwitchActionHandler,
     );
 
     companion object {
@@ -91,6 +131,10 @@ enum class SwitchButtonAction(
             4 -> TorchLight
             5 -> DarkMode
             6 -> PowerSaver
+            7 -> WorkProfile
+            8 -> DoNothing
+            9 -> SoundProfiles
+            10 -> BlueLightFilter
             else -> null
         }
     }
@@ -102,6 +146,10 @@ val SwitchButtonActions: List<SwitchButtonAction> = listOf(
     SwitchButtonAction.TorchLight,
     SwitchButtonAction.DarkMode,
     SwitchButtonAction.PowerSaver,
+    SwitchButtonAction.WorkProfile,
+    SwitchButtonAction.SoundProfiles,
+    SwitchButtonAction.BlueLightFilter,
+    SwitchButtonAction.DoNothing,
 )
 
 val SwitchButtonActionsFairphoneSprings: List<SwitchButtonAction> = listOf(
@@ -111,4 +159,8 @@ val SwitchButtonActionsFairphoneSprings: List<SwitchButtonAction> = listOf(
     SwitchButtonAction.TorchLight,
     SwitchButtonAction.DarkMode,
     SwitchButtonAction.PowerSaver,
+    SwitchButtonAction.WorkProfile,
+    SwitchButtonAction.SoundProfiles,
+    SwitchButtonAction.BlueLightFilter,
+    SwitchButtonAction.DoNothing,
 )

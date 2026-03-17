@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2025 FairPhone B.V.
+  ~ Copyright (C) 2026 FairPhone B.V.
   ~
   ~ SPDX-FileCopyrightText: 2025. FairPhone B.V.
   ~
@@ -21,4 +21,19 @@
     <string name="pref_title_battery_saver_mode">Économiseur de batterie</string>
     <string name="pref_summary_battery_saver_mode">Activer/désactiver l\'économiseur de batterie</string>
     <string name="disable_switch_to_change_setting_text">Pour sélectionner une autre action, désactiver le switch</string>
+
+    <string name="pref_title_sound_profiles">Profils sonores</string>
+    <string name="pref_summary_sound_profiles">Basculer entre les profils sonores</string>
+    <string name="pref_title_blue_light_filter">Filtre de lumière bleue</string>
+    <string name="pref_summary_blue_light_filter">Active/désactive le filtre de lumière bleue</string>
+    <string name="sound_profile_silent">Silencieux</string>
+    <string name="sound_profile_vibrate">Vibreur</string>
+    <string name="sound_profile_loud">Son et vibration</string>
+    <string name="switch_up">Haut</string>
+    <string name="switch_down">Bas</string>
+
+    <string name="pref_title_work_profile">Profil professionnel</string>
+    <string name="pref_summary_work_profile">Active/désactive le profil professionnel</string>
+    <string name="pref_title_do_nothing">Ne rien faire</string>
+    <string name="pref_summary_do_nothing">Désactive le Switch</string>
 </resources>

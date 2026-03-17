@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2025 FairPhone B.V.
+  ~ Copyright (C) 2026 FairPhone B.V.
   ~
   ~ SPDX-FileCopyrightText: 2025. FairPhone B.V.
   ~
@@ -21,4 +21,19 @@
     <string name="pref_title_battery_saver_mode">Batterisparläge</string>
     <string name="pref_summary_battery_saver_mode">Slår på/stänger av batterisparläget</string>
     <string name="disable_switch_to_change_setting_text">Inaktivera omkopplaren innan du justerar den tilldelade åtgärden</string>
+
+    <string name="pref_title_sound_profiles">Ljudprofiler</string>
+    <string name="pref_summary_sound_profiles">Växla mellan ljudprofiler</string>
+    <string name="pref_title_blue_light_filter">Blåljusfilter</string>
+    <string name="pref_summary_blue_light_filter">Slår på/av blåljusfilter</string>
+    <string name="sound_profile_silent">Ljudlös</string>
+    <string name="sound_profile_vibrate">Vibration</string>
+    <string name="sound_profile_loud">Ljud och vibration</string>
+    <string name="switch_up">Upp</string>
+    <string name="switch_down">Ned</string>
+
+    <string name="pref_title_work_profile">Arbetsprofil</string>
+    <string name="pref_summary_work_profile">Aktiverar/inaktiverar arbetsprofilen</string>
+    <string name="pref_title_do_nothing">Gör ingenting</string>
+    <string name="pref_summary_do_nothing">Inaktiverar Switch</string>
 </resources>

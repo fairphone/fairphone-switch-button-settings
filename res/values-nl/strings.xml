@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2025 FairPhone B.V.
+  ~ Copyright (C) 2026 FairPhone B.V.
   ~
   ~ SPDX-FileCopyrightText: 2025. FairPhone B.V.
   ~
@@ -21,4 +21,19 @@
     <string name="pref_title_battery_saver_mode">Batterijbesparing</string>
     <string name="pref_summary_battery_saver_mode">Zet batterijbesparing aan/uit</string>
     <string name="disable_switch_to_change_setting_text">Schakel de switch uit voordat je de toegewezen actie aanpast</string>
+
+    <string name="pref_title_sound_profiles">Geluidsprofielen</string>
+    <string name="pref_summary_sound_profiles">Schakelen tussen geluidsprofielen</string>
+    <string name="pref_title_blue_light_filter">Blauwlichtfilter</string>
+    <string name="pref_summary_blue_light_filter">Zet blauwlichtfilter aan/uit</string>
+    <string name="sound_profile_silent">Stil</string>
+    <string name="sound_profile_vibrate">Trillen</string>
+    <string name="sound_profile_loud">Geluid en trillen</string>
+    <string name="switch_up">Omhoog</string>
+    <string name="switch_down">Omlaag</string>
+
+    <string name="pref_title_work_profile">Werkprofiel</string>
+    <string name="pref_summary_work_profile">Schakelt het werkprofiel in/uit</string>
+    <string name="pref_title_do_nothing">Niets doen</string>
+    <string name="pref_summary_do_nothing">Schakelt de Switch uit</string>
 </resources>

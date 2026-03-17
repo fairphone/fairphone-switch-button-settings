@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2025 FairPhone B.V.
+  ~ Copyright (C) 2026 FairPhone B.V.
   ~
   ~ SPDX-FileCopyrightText: 2025. FairPhone B.V.
   ~
@@ -30,6 +30,22 @@
 
     <string name="pref_title_battery_saver_mode">Battery Saver</string>
     <string name="pref_summary_battery_saver_mode">Turns on/off battery saver</string>
+
+    <string name="pref_title_work_profile">Work profile</string>
+    <string name="pref_summary_work_profile">Enables/disables the work profile</string>
+    <string name="pref_title_do_nothing">Do nothing</string>
+    <string name="pref_summary_do_nothing">Deactivates the Switch</string>
+    <string name="pref_title_sound_profiles">Sound profiles</string>
+    <string name="pref_summary_sound_profiles">Switch between sound profiles</string>
+    <string name="pref_title_blue_light_filter">Blue light filter</string>
+    <string name="pref_summary_blue_light_filter">Turns on/off blue light filter</string>
+
+    <string name="sound_profile_silent">Silent</string>
+    <string name="sound_profile_vibrate">Vibrate</string>
+    <string name="sound_profile_loud">Ring and vibrate</string>
+
+    <string name="switch_up">Switch Up</string>
+    <string name="switch_down">Switch Down</string>
 
     <string name="disable_switch_to_change_setting_text">Disable switch before adjusting action assigned to it</string>
 

@@ -8,6 +8,7 @@
 
 package com.fairphone.settings.switchbutton.ui.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,7 +25,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fairphone.settings.switchbutton.R
+import com.fairphone.settings.switchbutton.ui.theme.SwitchButtonSettingsTheme
 import com.fairphone.settings.switchbutton.ui.theme.prefSummaryTextStyle
 import com.fairphone.settings.switchbutton.ui.theme.prefTitleTextStyle
 
@@ -37,6 +42,11 @@ fun RadioButtonSetting(
     onRadioButtonClicked: () -> Unit,
     icon: ImageVector? = null,
     onIconClicked: (() -> Unit)? = null,
+    options: List<String>? = null,
+    switchUpSelectedOption: Int? = null,
+    switchDownSelectedOption: Int? = null,
+    onSwitchUpOptionSelected: ((Int) -> Unit)? = null,
+    onSwitchDownOptionSelected: ((Int) -> Unit)? = null,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -44,23 +54,18 @@ fun RadioButtonSetting(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
-            .clickable(
-                enabled = enabled,
-                onClick = onRadioButtonClicked
-            )
     ) {
         RadioButton(
             enabled = enabled,
             selected = selected,
             onClick = onRadioButtonClicked,
-            //colors = RadioButtonDefaults.colors(
-            //    selectedColor = MaterialTheme.colorScheme.secondary,
-            //)
         )
 
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
-            modifier = Modifier.padding(top = 8.dp).weight(1f)
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .weight(1f)
         ) {
             Text(
                 text = title,
@@ -80,6 +85,24 @@ fun RadioButtonSetting(
                     MaterialTheme.colorScheme.onSurfaceVariant
                 }
             )
+
+            if (selected && !options.isNullOrEmpty()) {
+                DropdownSetting(
+                    title = stringResource(R.string.switch_up),
+                    options = options,
+                    selectedOption = switchUpSelectedOption,
+                    modifier = Modifier.padding(top = 8.dp),
+                    onOptionSelected = { onSwitchUpOptionSelected?.invoke(it) },
+                )
+
+                DropdownSetting(
+                    title = stringResource(R.string.switch_down),
+                    options = options,
+                    selectedOption = switchDownSelectedOption,
+                    modifier = Modifier.padding(top = 8.dp),
+                    onOptionSelected = { onSwitchDownOptionSelected?.invoke(it) },
+                )
+            }
         }
 
         if (icon != null) {
@@ -93,4 +116,27 @@ fun RadioButtonSetting(
             )
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true, backgroundColor = 0xFFFFFF)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+fun RadioButtonSetting_Preview() {
+    SwitchButtonSettingsTheme {
+        Column {
+            RadioButtonSetting(
+                title = "Fairphone Moments",
+                summary = "Turns on/off Fairphone Moments.\nYou can adjust those settings in the app",
+                options = listOf(""),
+                selected = true,
+                enabled = true,
+                onRadioButtonClicked = {},
+                icon = null,
+                onIconClicked = {},
+                onSwitchUpOptionSelected = {},
+                onSwitchDownOptionSelected = {},
+            )
+        }
+    }
+
 }

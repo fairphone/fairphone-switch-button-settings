@@ -16,9 +16,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.camera2.CameraManager
+import android.media.AudioManager
 import android.net.ConnectivityManager
 import android.os.PowerManager
 import android.os.UserHandle
+import android.os.UserManager
 import android.provider.Settings
 import android.util.Log
 
@@ -30,11 +32,13 @@ fun Context.notificationManager() =
     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 fun Context.uiModeManager() = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+fun Context.userManager() = getSystemService(Context.USER_SERVICE) as UserManager
 
 fun Context.connectivityManager() =
     getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
 fun Context.roleManager() = getSystemService(Context.ROLE_SERVICE) as RoleManager
+fun Context.audioManager() = getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
 fun Context.isFairphoneMomentsAvailable(): Boolean =
     isPackageAvailable(Constants.FAIRPHONE_MOMENTS_PACKAGE_NAME)

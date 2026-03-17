@@ -8,9 +8,8 @@
 
 package com.fairphone.settings.switchbutton.action
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
-import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.util.connectivityManager
 
 /**
@@ -24,29 +23,32 @@ import com.fairphone.settings.switchbutton.util.connectivityManager
  * @see SwitchActionHandler
  */
 object FlightModeSwitchActionHandler : SwitchActionHandler() {
-    override suspend fun onSwitchButtonStateChanged(context: Context, state: SwitchState): Result<Unit> {
-        return try {
-            when (state) {
-                SwitchState.UP -> stopFlightMode(context)
-                SwitchState.DOWN -> startFlightMode(context)
-                else -> Unit // ignore
-            }
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Log.e("FlightModeSwitch", "Error", e)
-            Result.failure(e)
-        }
+
+    override suspend fun onSwitchStateUp(context: Context): Result<Unit> {
+        return toggleFlightMode(context, enable = false)
     }
 
-    private fun startFlightMode(context: Context) {
-        context
-            .connectivityManager()
-            .setAirplaneMode(true)
+    override suspend fun onSwitchStateDown(context: Context): Result<Unit> {
+        return toggleFlightMode(context, enable = true)
     }
 
-    private fun stopFlightMode(context: Context) {
+    /**
+     * Toggles the flight mode (airplane mode) on the device.
+     *
+     * This method enables or disables the flight mode using the system's `ConnectivityManager` service.
+     * Requires appropriate permissions to modify airplane mode settings.
+     *
+     * @param context The context used to access the system's `ConnectivityManager` service.
+     * @param enable A boolean flag indicating whether to enable or disable flight mode.
+     *               Set to `true` to activate flight mode or `false` to deactivate it.
+     * @return A [Result] containing a success status if the operation completes without errors,
+     *         or a failure status if an exception occurs.
+     */
+    @SuppressLint("MissingPermission")
+    private fun toggleFlightMode(context: Context, enable: Boolean): Result<Unit> {
         context
             .connectivityManager()
-            .setAirplaneMode(false)
+            .setAirplaneMode(enable)
+        return Result.success(Unit)
     }
 }

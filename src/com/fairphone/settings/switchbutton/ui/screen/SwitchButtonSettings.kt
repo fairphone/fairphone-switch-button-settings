@@ -29,9 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,18 +36,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fairphone.settings.switchbutton.R
+import com.fairphone.settings.switchbutton.data.model.SoundProfile
 import com.fairphone.settings.switchbutton.data.model.SwitchButtonAction
 import com.fairphone.settings.switchbutton.data.model.SwitchState
-import com.fairphone.settings.switchbutton.data.prefs.AppPrefs
 import com.fairphone.settings.switchbutton.ui.component.RadioButtonSetting
 import com.fairphone.settings.switchbutton.ui.theme.SwitchButtonSettingsTheme
 import com.fairphone.settings.switchbutton.ui.theme.prefScreenHeaderTextStyle
 import com.fairphone.settings.switchbutton.ui.theme.prefSummaryTextStyle
 import com.fairphone.settings.switchbutton.util.SwitchButtonSettingsUtils
-import com.fairphone.settings.switchbutton.util.startFairphoneMomentsSettings
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,44 +75,37 @@ fun SwitchButtonSettings(onNavigateBack: () -> Unit) {
 }
 
 @Composable
-fun SwitchButtonSettingsScreen() {
+fun SwitchButtonSettingsScreen(viewModel: SwitchButtonSettingsViewModel = viewModel(factory = SwitchButtonSettingsViewModel.Factory)) {
     val context = LocalContext.current.applicationContext
-    val appPrefs = remember { AppPrefs(context) }
 
-    var selectedSetting by remember {
-        mutableStateOf(SwitchButtonSettingsUtils.getCurrentSwitchButtonAction(context))
-    }
-    val switchSettings by remember {
-        mutableStateOf(SwitchButtonSettingsUtils.getAllSwitchActions(context))
-    }
-    val switchState by appPrefs.getLastKnownSwitchStateFlow().collectAsStateWithLifecycle(
-        initialValue = SwitchState.UP,
-        lifecycleOwner = LocalLifecycleOwner.current
-    )
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SwitchButtonSettingsScreen(
-        actions = switchSettings,
-        selectedSetting = selectedSetting,
-        enabled = switchState == SwitchState.UP,
-        onSettingSelected = { action ->
-            SwitchButtonSettingsUtils.setSwitchButtonAction(context, action)
-            selectedSetting = action
+        actions = uiState.switchButtonActions,
+        selectedSetting = uiState.selectedSwitchButtonAction,
+        enabled = uiState.switchState == SwitchState.UP,
+        onSettingSelected = { setting ->
+            viewModel.onUiEvent(UiEvent.SwitchActionSelected(setting))
         },
-        onOpenActionConfig = { action ->
-            if (action == SwitchButtonAction.FairphoneMoments) {
-                context.startFairphoneMomentsSettings()
-            }
+        soundProfileOptions = uiState.soundProfileOptions,
+        onSoundUpSelected = {
+            viewModel.onUiEvent(UiEvent.SoundProfileUpSelected(it))
+        },
+        onSoundDownSelected = {
+            viewModel.onUiEvent(UiEvent.SoundProfileDownSelected(it))
         }
     )
 }
 
 @Composable
 fun SwitchButtonSettingsScreen(
-    actions: List<SwitchButtonAction>,
-    selectedSetting: SwitchButtonAction,
+    actions: List<SwitchActionSetting>,
+    selectedSetting: String,
     enabled: Boolean,
-    onSettingSelected: (SwitchButtonAction) -> Unit,
-    onOpenActionConfig: (SwitchButtonAction) -> Unit?,
+    onSettingSelected: (SwitchActionSetting) -> Unit,
+    soundProfileOptions: Pair<SoundProfile, SoundProfile>? = null,
+    onSoundUpSelected: (SoundProfile) -> Unit,
+    onSoundDownSelected: (SoundProfile) -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -145,7 +134,10 @@ fun SwitchButtonSettingsScreen(
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(10.dp))
+                        .background(
+                            MaterialTheme.colorScheme.surfaceContainer,
+                            RoundedCornerShape(10.dp)
+                        )
                         .fillMaxWidth()
                         .padding(vertical = 10.dp)
                 )
@@ -158,19 +150,31 @@ fun SwitchButtonSettingsScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             actions.forEach { action ->
-                RadioButtonSetting(
-                    title = stringResource(action.titleResId),
-                    summary = stringResource(action.summaryResId),
-                    selected = selectedSetting.key == action.key,
-                    enabled = enabled,
-                    onRadioButtonClicked = { onSettingSelected(action) },
-                    icon = action.icon,
-                    onIconClicked = {
-                        if (enabled) {
-                            onOpenActionConfig.invoke(action)
-                        }
-                    },
-                )
+                // Refactor this and make it more generic
+                if (action.key == SwitchButtonAction.SoundProfiles.key) {
+                    val soundProfiles = SoundProfile.entries.toTypedArray()
+                    RadioButtonSetting(
+                        title = stringResource(action.titleResId),
+                        summary = stringResource(action.summaryResId),
+                        selected = selectedSetting == action.key,
+                        enabled = enabled,
+                        onRadioButtonClicked = { onSettingSelected(action) },
+                        options = soundProfiles.map { stringResource(it.titleResId) },
+                        switchUpSelectedOption = soundProfileOptions?.first?.ordinal,
+                        switchDownSelectedOption = soundProfileOptions?.second?.ordinal,
+                        onSwitchUpOptionSelected = { onSoundUpSelected(soundProfiles[it]) },
+                        onSwitchDownOptionSelected = { onSoundDownSelected(soundProfiles[it]) },
+                    )
+                } else {
+                    RadioButtonSetting(
+                        title = stringResource(action.titleResId),
+                        summary = stringResource(action.summaryResId),
+                        selected = selectedSetting == action.key,
+                        enabled = enabled,
+                        onRadioButtonClicked = { onSettingSelected(action) },
+                        options = null,
+                    )
+                }
             }
         }
     }
@@ -178,14 +182,23 @@ fun SwitchButtonSettingsScreen(
 
 @Composable
 @Preview
+@Preview(uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 fun SwitchButtonSettings_Preview() {
     SwitchButtonSettingsTheme {
+        val actions = SwitchButtonSettingsUtils.getAllSwitchActions(LocalContext.current).map {
+            SwitchActionSetting(
+                key = it.key,
+                titleResId = it.titleResId,
+                summaryResId = it.summaryResId,
+            )
+        }
         SwitchButtonSettingsScreen(
-            actions = SwitchButtonSettingsUtils.getAllSwitchActions(LocalContext.current),
-            selectedSetting = SwitchButtonAction.DoNotDisturb,
+            actions = actions,
+            selectedSetting = SwitchButtonAction.SoundProfiles.key,
             enabled = true,
             onSettingSelected = {},
-            onOpenActionConfig = {}
+            onSoundUpSelected = {},
+            onSoundDownSelected = {}
         )
     }
 }

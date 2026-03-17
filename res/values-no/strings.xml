@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2025 FairPhone B.V.
+  ~ Copyright (C) 2026 FairPhone B.V.
   ~
   ~ SPDX-FileCopyrightText: 2025. FairPhone B.V.
   ~
@@ -21,4 +21,19 @@
     <string name="pref_title_battery_saver_mode">Batterisparing</string>
     <string name="pref_summary_battery_saver_mode">Slår på/av batterisparing</string>
     <string name="disable_switch_to_change_setting_text">Deaktiver bryteren før du justerer handlingen som er tilordnet den</string>
+
+    <string name="pref_title_sound_profiles">Lydprofiler</string>
+    <string name="pref_summary_sound_profiles">Bytt mellom lydprofiler</string>
+    <string name="pref_title_blue_light_filter">Blått lys-filter</string>
+    <string name="pref_summary_blue_light_filter">Slår av/på blått lys-filter</string>
+    <string name="sound_profile_silent">Lydløs</string>
+    <string name="sound_profile_vibrate">Vibrering</string>
+    <string name="sound_profile_loud">Lyd og vibrasjon</string>
+    <string name="switch_up">Opp</string>
+    <string name="switch_down">Ned</string>
+
+    <string name="pref_title_work_profile">Arbeidsprofil</string>
+    <string name="pref_summary_work_profile">Aktiverer/deaktiverer arbeidsprofilen</string>
+    <string name="pref_title_do_nothing">Gjør ingenting</string>
+    <string name="pref_summary_do_nothing">Deaktiverer Switch</string>
 </resources>
