@@ -10,7 +10,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fairphone.settings.switchbutton"
     android:sharedUserId="android.uid.system"
-    android:versionName="4">
+    android:versionName="5">
 
     <queries>
         <package android:name="com.fairphone.spring.launcher" />
