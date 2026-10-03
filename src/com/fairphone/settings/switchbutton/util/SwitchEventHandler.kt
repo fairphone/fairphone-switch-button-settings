@@ -12,6 +12,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.fairphone.settings.switchbutton.util
 import com.fairphone.settings.switchbutton.data.model.SwitchState
 import com.fairphone.settings.switchbutton.data.prefs.AppPrefs
 import kotlinx.coroutines.CoroutineScope
@@ -101,6 +102,16 @@ object SwitchEventHandler {
             appPrefs.setLastKnownSwitchState(currentState)
 
             try {
+                // broadcast intent
+                val broadcastIntent = Intent(Constants.ACTION_SWITCH_BUTTON).apply {
+                    if(state == SwitchState.UP) {
+                        putExtra(Constants.EXTRA_SWITCH_STATUS, "UP")
+                    } else {
+                        putExtra(Constants.EXTRA_SWITCH_BUTTON_STATE, "DOWN")
+                    }
+                }
+                context.sendBroadcast(broadcastIntent)
+
                 val result = handler.onSwitchButtonStateChanged(context, state)
                 if (result.isFailure) {
                     // Save error state
